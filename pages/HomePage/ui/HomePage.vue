@@ -1,7 +1,72 @@
+<script lang='ts' setup>
+import { SelectCategory } from '~/features/SelectCategory'
+import { SelectLoader } from '~/features/SelectLoader'
+import { ModList } from '~/widgets/ModList'
+
+const modName = ref('')
+
+const loader = computed(() => {
+  return useRoute().query.loader?.toString().toLocaleLowerCase()
+})
+
+const categories = computed(() => {
+  return useRoute().query.categories?.toString().toLocaleLowerCase()
+})
+
+const facets = computed(() => {
+  const list = []
+
+  list.push(['project_type:mod'])
+
+  if (categories.value)
+    categories.value.split(',').forEach(category => list.push([`categories:${category}`]))
+
+  if (loader.value)
+    list.push([`categories:${loader.value}`])
+
+  return JSON.stringify(list)
+})
+
+const routePage = computed(() => {
+  if (useRoute().query.page)
+    return Number(useRoute().query.page)
+
+  return 1
+})
+
+const page = ref(routePage.value)
+const offset = computed(() => (page.value - 1) * 20)
+
+watch(() => page.value, () => {
+  useRouter().push({ query: { ...useRoute().query, page: page.value } })
+})
+
+watch(() => facets.value, () => {
+  page.value = 1
+})
+
+const { data, pending } = await useAPI<{ limit: number, offset: number, total_hits: number, hits: IMod[] }>('search', {
+  query: {
+    query: modName,
+    limit: 20,
+    facets,
+    offset,
+  },
+})
+</script>
+
 <template>
-  <div class="w-screen h-screen bg-[#18191a] flex justify-center items-center">
-    <div class="flex justify-center items-center w-100 text-white text-4xl font-bold text-center">
-      Hello World
+  <UContainer>
+    <UInput v-model="modName" class="mt-10" size="xl" placeholder="Search mod" trailing-icon="line-md:search" />
+
+    <div class="flex items-center justify-between">
+      <SelectLoader />
+      <SelectCategory />
     </div>
-  </div>
+    <UPagination v-model="page" :total="data?.total_hits" :page-count="20" />
+
+    <div class="my-4">
+      <ModList :mods="data?.hits" :pending="pending" />
+    </div>
+  </UContainer>
 </template>

@@ -1,5 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap');
+
+.no-scroolbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    
+}
+
 /* You can put there global styles */
 
 * {
     box-sizing: border-box;
 }
+
+/* You can put there global styles */
+body {
+    font-family: 'Montserrat', sans-serif;
+    /* background: #F6F7F8; */
+}
+
