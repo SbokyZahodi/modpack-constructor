@@ -38,7 +38,7 @@ const page = ref(routePage.value)
 const offset = computed(() => (page.value - 1) * 20)
 
 watch(() => page.value, () => {
-  useRouter().push({ query: { ...useRoute().query, page: page.value } })
+  setQuery('page', String(page.value))
 })
 
 watch(() => facets.value, () => {

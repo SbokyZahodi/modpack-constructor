@@ -1,7 +1,7 @@
 <template>
   <div class="py-5">
     <div class="center">
-      <USkeleton class="w-1/2 h-50" />
+      <USkeleton class="size-40 rounded-xl" />
     </div>
 
     <div class="flex flex-col items-end mt-5 gap-2">

@@ -4,7 +4,7 @@ const props = defineProps<{
 }>()
 
 function showModInfo() {
-  useState('mod-info').value = props.mod.project_id
+  setQuery('mod', props.mod.project_id)
 }
 </script>
 

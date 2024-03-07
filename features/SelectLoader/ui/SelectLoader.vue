@@ -24,7 +24,7 @@ function setLoader(event: number) {
     return
   }
 
-  useRouter().push({ query: { ...useRoute().query, loader: items[event].label } })
+  setQuery('loader', items[event].label)
 }
 </script>
 

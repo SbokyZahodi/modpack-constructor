@@ -1,12 +1,12 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ['@unocss/nuxt', '@nuxt/ui', '@nuxt/image', 'nuxt-swiper'],
+  modules: ['@unocss/nuxt', '@nuxt/ui', '@nuxt/image'],
   css: ['@/app/global.css'],
 
   runtimeConfig: {
     public: {
-      BASE_URL: process.env.BASE_URL || 'https://api.modrinth.com/v2',
+      api: 'https://api.modrinth.com/v2',
     },
   },
 
@@ -15,6 +15,7 @@ export default defineNuxtConfig({
       'shared/composables',
       'shared/utils',
       'shared/types',
+      'shared/fetchers',
       // You can specify here any folder from which you want to auto-import
     ],
   },

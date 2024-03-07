@@ -2,50 +2,37 @@
 import ModInfoSkeleton from './ModInfoSkeleton.vue'
 import type { IModInfo } from '~/shared/types/IModInfo'
 
-const mod = useState<string | null>('mod-info', () => null)
-const isModExist = computed(() => mod.value !== null)
-const config = useRuntimeConfig()
+const mod = computed(() => useRoute().query.mod?.toString() || null)
 
-const url = computed(() => {
-  return `${config.public.BASE_URL}/project/${mod.value}`
-})
+const isModExist = computed(() => Boolean(mod.value))
 
-const urlDependencies = computed(() => {
-  return `${config.public.BASE_URL}/project/${mod.value}/dependencies`
-})
+const baseURL = useRuntimeConfig().public.api
 
-const { data, pending, execute: fetchMod } = await useFetch<IModInfo>(url, {
-  server: false,
-  immediate: false,
-})
+const { data, pending, execute: fetchMod } = await useLazyAPI<IModInfo>(() => `${baseURL}/project/${mod.value}`)
 
-const { data: dependencies, execute: fetchDependencies } = await useFetch<{ versions: any, projects: IModInfo[] }>(urlDependencies, {
-  server: false,
-  immediate: false,
-})
-
-watch(() => mod.value, () => {
-  if (mod.value) {
-    fetchMod()
-    fetchDependencies()
-  }
-}, { immediate: false })
+const { data: dependencies, pending: isDepFetching, execute: fechDep } = await useLazyAPI<{ versions: any, projects: IModInfo[] }>(() => `${baseURL}/project/${mod.value}/dependencies`)
 
 const isForge = computed(() => data.value?.loaders.includes('forge'))
 const isFabric = computed(() => data.value?.loaders.includes('fabric'))
-
 const latestVersion = computed(() => data.value?.game_versions.at(-1))
 
+onMounted(() => {
+  if (mod.value) {
+    fetchMod()
+    fechDep()
+  }
+})
+
 function clear() {
-  mod.value = null
+  setQuery('mod', null)
 }
 </script>
 
 <template>
   <USlideover v-model="isModExist" appear as="div" :ui="{ base: 'px-5' }" @close="clear">
-    <template v-if="!pending">
+    <div v-if="!pending && !isDepFetching" class="h-90% overflow-auto px-2 hide-scrollbar">
       <div class="center">
-        <img :src="data?.icon_url" class="size-40 m-5">
+        <img :src="data?.icon_url" class="size-40 m-5 rounded-xl">
       </div>
 
       <div class="text-center font-bold text-3xl mt-4">
@@ -57,7 +44,7 @@ function clear() {
         latest version {{ latestVersion }}
       </div>
 
-      <UCard class="mt-5">
+      <UCard class="mt-5 text-sm">
         {{ data?.description }}
       </UCard>
 
@@ -75,7 +62,7 @@ function clear() {
         <template #dep>
           <div v-for="dep in dependencies?.projects" :key="dep.slug" class="flex gap-4 items-center text-white my-2">
             <img :src="dep.icon_url" class="size-10 rounded-xl" alt="">
-            <UButton variant="link" @click="useState('mod-info').value = dep.id">
+            <UButton variant="link" @click="setQuery('mod', dep.slug)">
               {{ dep.slug }}
             </UButton>
           </div>
@@ -87,10 +74,21 @@ function clear() {
           Add to Modpack
         </UButton>
       </div>
-    </template>
+    </div>
 
     <template v-else>
       <ModInfoSkeleton />
     </template>
   </USlideover>
 </template>
+
+<style scoped>
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* для Webkit браузеров */
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* для IE и Edge */
+  scrollbar-width: none;  /* для Firefox */
+}
+</style>

@@ -3,7 +3,7 @@ import type { ICategory } from '~/shared/types/ICategory'
 
 const { data } = await useAPI<ICategory[]>('tag/category')
 
-const modCategories = computed(() => data.value.filter(el => el.project_type === 'mod'))
+const modCategories = computed(() => data.value?.filter(el => el.project_type === 'mod'))
 
 const categoriesQuery = computed(() => useRoute().query.categories?.toString().split(','))
 
@@ -19,7 +19,7 @@ function addCategory(category: string) {
 watch(() => selectedCategories.value, () => {
   const cats = selectedCategories.value.length ? selectedCategories.value.join(',') : null
 
-  useRouter().push({ query: { ...useRoute().query, categories: cats } })
+  setQuery('categories', cats)
 }, { deep: true })
 </script>
 

@@ -25,7 +25,6 @@
     "@unocss/transformer-variant-group": "^0.58.5",
     "eslint": "^8.56.0",
     "nuxt": "^3.10.1",
-    "nuxt-swiper": "^1.2.2",
     "typescript": "^5.3.3"
   }
 }

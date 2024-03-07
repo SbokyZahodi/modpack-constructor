@@ -6,6 +6,7 @@ import { Header } from '~/widgets/Header'
 
 <template>
   <main class="">
+    <canvas id="canvas" class="fixed -z-10" />
     <SelectedModList />
 
     <Header />
