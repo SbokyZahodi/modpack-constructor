@@ -9,6 +9,10 @@ const items = [{
   label: 'Forge',
 }, {
   label: 'Fabric',
+}, {
+  label: 'NeoForge',
+}, {
+  label: 'Quilt',
 }]
 
 const currentIndex = computed(() => items.findIndex(el => el.label === loader.value))

@@ -11,7 +11,7 @@ function showModInfo() {
 <template>
   <UCard as="div" class="transition cursor-pointer hover:bg-light-400 hover:dark:bg-zinc-800 border-inherit shadow-none light:border" @click="showModInfo">
     <div class="flex gap-5">
-      <NuxtImg v-if="mod.icon_url" :src="mod.icon_url" format="webp" class="size-20" />
+      <NuxtImg v-if="mod.icon_url" :src="mod.icon_url" format="webp" class="size-20 rounded-xl" />
 
       <span class="font-semibold text-lg">{{ mod.title }}</span>
     </div>

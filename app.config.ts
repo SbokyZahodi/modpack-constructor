@@ -7,6 +7,10 @@ export default defineAppConfig({
       base: 'transition',
     },
 
+    modal: {
+      container: 'items-center',
+    },
+
     icons: {
       dynamic: true,
     },

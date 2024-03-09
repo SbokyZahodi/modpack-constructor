@@ -1,17 +1,15 @@
 <script lang='ts' setup>
-import { SelectedModList } from '~/widgets/SelectedModList'
+import { ModPack } from '~/widgets/ModPack'
 import { ShowModInfo } from '~/features/ShowModInfo'
 import { Header } from '~/widgets/Header'
 </script>
 
 <template>
   <main class="">
-    <canvas id="canvas" class="fixed -z-10" />
-    <SelectedModList />
-
+    <ModPack />
     <Header />
     <ShowModInfo />
-
+    <UNotifications class="md:w-100" />
     <slot />
   </main>
 </template>

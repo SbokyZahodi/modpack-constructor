@@ -24,18 +24,10 @@ watch(() => selectedCategories.value, () => {
 </script>
 
 <template>
-  <UPopover>
-    <UButton class="font-semibold">
-      Categories {{ selectedCategories.length > 0 ? `(${selectedCategories.length})` : '' }}
+  <div class="flex gap-4 overflow-auto hide-scrollbar">
+    <UButton v-for="category in modCategories" :key="category.name" class="p-2 gap-2 center" :variant="selectedCategories.includes(category.name) ? 'solid' : 'outline'" @click="addCategory(category.name)">
+      <div alt="" class="size-5" v-html="category.icon" />
+      {{ category.name }}
     </UButton>
-
-    <template #panel>
-      <div class="gap-5 grid grid-cols-3 p-2">
-        <UButton v-for="category in modCategories" :key="category.name" class="p-2 gap-2 center" :variant="selectedCategories.includes(category.name) ? 'solid' : 'outline'" @click="addCategory(category.name)">
-          <div alt="" class="size-5" v-html="category.icon" />
-          {{ category.name }}
-        </UButton>
-      </div>
-    </template>
-  </UPopover>
+  </div>
 </template>

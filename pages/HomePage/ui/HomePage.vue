@@ -59,11 +59,11 @@ const { data, pending } = await useAPI<{ limit: number, offset: number, total_hi
   <UContainer>
     <UInput v-model="modName" class="mt-10" size="xl" placeholder="Search mod" trailing-icon="line-md:search" />
 
-    <div class="flex items-center justify-between">
+    <SelectCategory class="my-4" />
+    <div class="md:flex items-center justify-between">
       <SelectLoader />
-      <SelectCategory />
+      <UPagination v-model="page" :total="data?.total_hits" :page-count="20" />
     </div>
-    <UPagination v-model="page" :total="data?.total_hits" :page-count="20" />
 
     <div class="my-4">
       <ModList :mods="data?.hits" :pending="pending" />
