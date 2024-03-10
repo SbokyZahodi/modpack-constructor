@@ -1,7 +1,9 @@
 <script lang='ts' setup>
 import { useModpack } from '..'
 
-const { modpack } = useModpack()
+const emit = defineEmits(['close'])
+
+const { modpack, setLoader, setVersion } = useModpack()
 
 const { data: versions } = await useAPI('tag/game_version')
 
@@ -9,30 +11,48 @@ const majorVersionsOptions = computed(() => {
   return versions.value.filter(({ major }) => major).map(item => item.version)
 })
 
-console.log(majorVersionsOptions.value)
-
 const loaders = [{ label: 'Forge' }, { label: 'Fabric' }, { label: 'NeoForge' }, { label: 'Quilt' }]
-const version = ref(majorVersionsOptions.value[0])
+
+const loader = ref('')
+const version = ref('1.20.1')
+
+console.log(loaders.findIndex(e => e.label === modpack.value.loader))
+
+onMounted(() => {
+  loader.value = modpack.value.loader
+  version.value = modpack.value.version
+})
+
+function saveChanges() {
+  setLoader(loader.value)
+
+  console.log(loader.value)
+
+  setVersion(version.value)
+  useToast().add({ title: 'Modpack settings updated!', icon: 'ic:round-save' })
+
+  emit('close')
+}
 </script>
 
 <template>
-  <UModal>
-    <div class="h-120 p-4 flex flex-col gap-3 relativ3">
+  <UModal prevent-close>
+    <div class="h-120 p-4 flex flex-col gap-3">
       <div class="text-lg font-semibold">
         Select modpack configuration
       </div>
 
-      <UTabs :items="loaders" />
+      <UTabs :items="loaders" :default-index="loaders.findIndex((el) => el.label === modpack.loader)" @change="loader = loaders[$event].label" />
 
-      <!-- <USelectMenu v-model="modpack.loader" :options="loaders" size="lg" /> -->
+      <USelectMenu v-model="version" size="lg" :options="majorVersionsOptions" />
 
-      <USelectMenu v-model="version" open size="lg" :options="majorVersionsOptions" />
+      <UAlert v-if="modpack.modlist.length" title="If you change a version the modlist will be reset" icon="octicon:alert-16" description="" color="red" variant="outline" />
 
-      <div class="absolute bottom-2 flex justify-around right-0 gap-3 w-full">
-        <UButton size="xl" variant="outline" class="w-50 center" color="red">
+      <div class="absolute bottom-2 flex justify-around right-0 w-full">
+        <UButton size="xl" variant="outline" class="w-60 center" color="red" @click="emit('close')">
           Cancel
         </UButton>
-        <UButton size="xl" variant="outline" class="w-50 center" @click="useToast().add({ title: 'Saved!' })">
+        <UButton size="xl" variant="outline" class="w-60 center" @click="saveChanges">
           Save
         </UButton>
       </div>

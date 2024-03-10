@@ -1,7 +1,7 @@
 <script lang='ts' setup>
-type ILoader = 'Forge' | 'Fabric' | 'All'
+type ILoader = 'Forge' | 'Fabric' | 'All' | 'NeoForge' | 'Quilt'
 
-const loader = useState<ILoader>('loader', () => useRoute().query.loader as ILoader || 'All')
+const loader = ref(useRoute().query.loader ?? 'All') as Ref<ILoader>
 
 const items = [{
   label: 'All',
@@ -18,13 +18,8 @@ const items = [{
 const currentIndex = computed(() => items.findIndex(el => el.label === loader.value))
 
 function setLoader(event: number) {
-  loader.value = items[event].label as ILoader
-
-  if (loader.value === 'All') {
-    useRouter().push({ query: {
-      ...useRoute().query,
-      loader: null,
-    } })
+  if (items[event].label === 'All') {
+    setQuery('loader', null)
     return
   }
 

@@ -1,8 +1,10 @@
 <script lang='ts' setup>
+import { useModpack } from '..'
 import ModPackOptions from './ModPackOptions.vue'
 
 const isSlideOpen = ref(false)
 const isOptionsModalOpened = ref(false)
+const { modpack } = useModpack()
 </script>
 
 <template>
@@ -11,11 +13,11 @@ const isOptionsModalOpened = ref(false)
       <div class="h-full w-full" @mouseleave="isSlideOpen = false">
         <div class="p2">
           <UButton icon="gravity-ui:gear" size="xl" class="w-full center" @click="isOptionsModalOpened = true">
-            Configure modpack
+            {{ modpack.loader }} - {{ modpack.version }}
           </UButton>
         </div>
       </div>
     </USlideover>
-    <ModPackOptions v-model="isOptionsModalOpened" />
+    <ModPackOptions v-model="isOptionsModalOpened" @close="isOptionsModalOpened = false" />
   </div>
 </template>

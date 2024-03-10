@@ -15,6 +15,6 @@ defineProps<{
   </template>
 
   <div v-if="pending" class="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mt-5">
-    <USkeleton v-for="n in 12" :key="n" class="h-40 bg-white" />
+    <USkeleton v-for="n in 12" :key="n" class="h-40" />
   </div>
 </template>

@@ -9,7 +9,7 @@ export default () => {
     return reactive({
       modlist: [],
       loader: 'Forge',
-      version: '',
+      version: '1.20.1',
     })
   })
 
