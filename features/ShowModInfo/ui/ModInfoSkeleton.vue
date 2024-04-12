@@ -16,7 +16,7 @@
       <USkeleton class="w-full h-14" />
     </div>
 
-    <div class="w-full absolute bottom-0 left-0 h-20 p-4">
+    <div class="w-full absolute bottom-0 left-0 p-4 h-20">
       <USkeleton class="w-full h-15" />
     </div>
   </div>

@@ -91,7 +91,7 @@ const modsByTab = computed(() => mods.value?.filter(mod => mod.project_type === 
 
   <ModPackOptions v-model="isOptionsModalOpened" @close="isOptionsModalOpened = false" />
 
-  <UTooltip :popper="{ placement: 'right' }" text="Open modpack" :shortcuts="['Alt', 'A']" class="fixed left-5 top-5 text-xl">
+  <UTooltip :popper="{ placement: 'right' }" text="Open modpack" :shortcuts="['Alt', 'A']" class="text-xl fixed left-5 top-5">
     <UButton size="xl" icon="streamline:backpack-solid" color="sky" @click="isSlideOpen = true" />
   </UTooltip>
 </template>

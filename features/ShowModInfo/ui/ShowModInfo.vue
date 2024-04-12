@@ -110,8 +110,8 @@ function close() {
         <NuxtImg :src="item" placeholder class="h-70 w-100" draggable="false" />
       </UCarousel>
 
-      <div class="absolute bottom-0 left-0 w-full p-2">
-        <UButton class="w-full center p-4 font-semibold" :disabled="!isModCompatible.compatible" variant="solid" @click="addMods">
+      <div class="p-2 absolute bottom-0 left-0 w-full">
+        <UButton class="w-full center font-semibold p-4" :disabled="!isModCompatible.compatible" variant="solid" @click="addMods">
           {{ isModCompatible.message }}
         </UButton>
       </div>
