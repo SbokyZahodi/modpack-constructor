@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ['@unocss/nuxt', '@nuxt/ui', '@nuxt/image'],
+  modules: ['@unocss/nuxt', '@nuxt/ui', '@nuxt/image', '@morev/vue-transitions/nuxt'],
   css: ['@/app/global.css'],
 
   runtimeConfig: {

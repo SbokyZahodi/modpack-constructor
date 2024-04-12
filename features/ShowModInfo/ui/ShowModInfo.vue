@@ -5,31 +5,42 @@ import type { IModInfo } from '~/shared/types/IModInfo'
 
 const { addMod } = useModpack()
 
-const mod = computed(() => useRoute().query.mod?.toString() || null)
+const mod = computed(() => getQuery('mod', null))
+const { modpack } = useModpack()
 
 const isModExist = computed(() => Boolean(mod.value))
 
 const { data, pending, execute: fetchMod } = await useLazyAPI<IModInfo>(() => `project/${mod.value}`)
 
-const { data: dependencies, pending: isDepFetching, execute: fechDep } = await useLazyAPI<{ versions: any, projects: IModInfo[] }>(() => `project/${mod.value}/dependencies`)
-
-const onlyRequiredDep = computed(() => {
-  return dependencies.value?.projects.filter(({ categories }) => categories.length === 1 && categories[0] === 'library')
-})
-
-const isForge = computed(() => data.value?.loaders.includes('forge'))
-const isFabric = computed(() => data.value?.loaders.includes('fabric'))
 const latestVersion = computed(() => data.value?.game_versions.at(-1))
 
+const isModCompatible = computed(() => {
+  const success = { message: 'Add to modpack', compatible: true }
+
+  if (data.value?.project_type !== 'mod')
+    return success
+
+  if (!data.value?.loaders.includes(modpack.value.loader.toLowerCase()))
+    return { message: 'Mod is not compatible with your loader', compatible: false }
+
+  if (!data.value?.game_versions.includes(modpack.value.version))
+    return { message: 'Mod is not compatible with your version', compatible: false }
+
+  if (modpack.value.modlist.includes(data.value?.slug))
+    return { message: 'Mod is already in modpack', compatible: false }
+
+  return success
+})
+
 function addMods() {
-  addMod()
+  if (data.value)
+    addMod(data.value.slug)
+  setQuery('mod', null)
 }
 
 onMounted(() => {
-  if (mod.value) {
+  if (mod.value)
     fetchMod()
-    fechDep()
-  }
 })
 
 function clear() {
@@ -38,8 +49,8 @@ function clear() {
 </script>
 
 <template>
-  <USlideover v-model="isModExist" as="div" :ui="{ base: 'px-5' }" @close="clear">
-    <div v-if="!pending && !isDepFetching" class="h-90% overflow-auto px-2 hide-scrollbar">
+  <USlideover v-model="isModExist" :ui="{ base: 'px-5' }" @close="clear">
+    <div v-if="!pending" class="overflow-auto hide-scrollbar h-90% px-2">
       <div class="center">
         <img :src="data?.icon_url" class="rounded-xl size-40 m-5">
       </div>
@@ -48,8 +59,8 @@ function clear() {
         {{ data?.title }}
       </div>
 
-      <div class="flex flex-col justify-end items-end">
-        <UDownloads class="center mt-5 justify-end float-right" :downloads="data?.downloads" />
+      <div class="flex flex-col items-end justify-end">
+        <UDownloads v-if="data?.downloads" class="center justify-end mt-5 float-right" :downloads="data.downloads" />
 
         <div class="">
           latest version {{ latestVersion }}
@@ -62,7 +73,7 @@ function clear() {
             </UButton>
 
             <template #panel>
-              <div v-for="loader in data?.loaders" :key="loader" class="w-40 m-2 capitalize center">
+              <div v-for="loader in data?.loaders" :key="loader" class="w-40 center m-2 capitalize">
                 {{ loader }}
               </div>
             </template>
@@ -74,30 +85,29 @@ function clear() {
         {{ data?.description }}
       </UCard>
 
-      <!-- <div class="grid mt-5 grid-cols-2 gap-4">
-        <div class="text-center font-bold p-2 bg-red-500 text-white rounded-xl shadow-md" :class="{ '!bg-green-500': isForge }">
-          Forge
-        </div>
+      <UCarousel
+        v-if="data?.gallery.length"
+        v-slot="{ item }" :items="data?.gallery.map((item) => item.url).slice(0, 10)"
+        indicators
+        :prev-button="{
+          color: 'gray',
+          icon: 'mingcute:left-fill',
+          class: '',
+        }"
+        :next-button="{
+          color: 'gray',
+          icon: 'mingcute:right-fill',
+          class: '',
+        }"
 
-        <div class="bg-red-500 p-2 text-center text-white font-bold rounded-xl shadow-md" :class="{ '!bg-green-500': isFabric }">
-          Fabric
-        </div>
-      </div> -->
-
-      <UAccordion v-if="onlyRequiredDep?.length" size="xl" class="mt-5" :items="[{ label: `Dependencies ${onlyRequiredDep.length || ''}`, slot: 'dep' }]">
-        <template #dep>
-          <div v-for="dep in onlyRequiredDep" :key="dep.slug" class="flex gap-4 items-center text-white my-2">
-            <img :src="dep.icon_url" class="size-10 rounded-xl" alt="">
-            <UButton variant="link" @click="setQuery('mod', dep.slug)">
-              {{ dep.slug }}
-            </UButton>
-          </div>
-        </template>
-      </UAccordion>
+        :ui="{ item: 'snap-end' }" arrows class="mt-4 h-70 w-100 rounded-xl overflow-hidden"
+      >
+        <NuxtImg :src="item" placeholder class="w-100 h-70" draggable="false" />
+      </UCarousel>
 
       <div class="absolute bottom-0 left-0 w-full p-2">
-        <UButton class="w-full center p-4 font-semibold" variant="solid">
-          Add to Modpack
+        <UButton class="w-full center p-4 font-semibold" :disabled="!isModCompatible.compatible" variant="solid" @click="addMods">
+          {{ isModCompatible.message }}
         </UButton>
       </div>
     </div>
@@ -107,14 +117,3 @@ function clear() {
     </template>
   </USlideover>
 </template>
-
-<style scoped>
-.hide-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
-.hide-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-</style>

@@ -10,7 +10,7 @@ defineProps<{
 <template>
   <template v-if="!pending">
     <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-      <ModEntity v-for="mod in mods" :key="mod.slug" :mod="mod" />
+      <ModEntity v-for="mod in mods" :key="mod.slug" :mod="mod" @click="setQuery('mod', mod.project_id)" />
     </div>
   </template>
 

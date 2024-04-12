@@ -5,18 +5,23 @@ const emit = defineEmits(['close'])
 
 const { modpack, setLoader, setVersion } = useModpack()
 
-const { data: versions } = await useAPI('tag/game_version')
+interface GameVersion {
+  version: string
+  version_type: string
+  date: string
+  major: boolean
+}
 
-const majorVersionsOptions = computed(() => {
-  return versions.value.filter(({ major }) => major).map(item => item.version)
+const { data: versions } = await useAPI<GameVersion[]>('tag/game_version')
+
+const majorVersionsOptions = computed<string[]>(() => {
+  return versions.value?.filter(({ major }) => major).map(item => item.version) ?? []
 })
 
 const loaders = [{ label: 'Forge' }, { label: 'Fabric' }, { label: 'NeoForge' }, { label: 'Quilt' }]
 
 const loader = ref('')
 const version = ref('1.20.1')
-
-console.log(loaders.findIndex(e => e.label === modpack.value.loader))
 
 onMounted(() => {
   loader.value = modpack.value.loader
@@ -25,20 +30,16 @@ onMounted(() => {
 
 function saveChanges() {
   setLoader(loader.value)
-
-  console.log(loader.value)
-
   setVersion(version.value)
   useToast().add({ title: 'Modpack settings updated!', icon: 'ic:round-save' })
-
   emit('close')
 }
 </script>
 
 <template>
   <UModal prevent-close>
-    <div class="h-120 p-4 flex flex-col gap-3">
-      <div class="text-lg font-semibold">
+    <div class="p-4 flex flex-col h-120 gap-3">
+      <div class="font-semibold text-lg">
         Select modpack configuration
       </div>
 
@@ -46,9 +47,9 @@ function saveChanges() {
 
       <USelectMenu v-model="version" size="lg" :options="majorVersionsOptions" />
 
-      <UAlert v-if="modpack.modlist.length" title="If you change a version the modlist will be reset" icon="octicon:alert-16" description="" color="red" variant="outline" />
+      <UAlert v-if="modpack.modlist.length" title="If you change a version the modpack will be reset" icon="octicon:alert-16" description="" color="red" variant="outline" />
 
-      <div class="absolute bottom-2 flex justify-around right-0 w-full">
+      <div class="flex absolute bottom-2 justify-around right-0 w-full">
         <UButton size="xl" variant="outline" class="w-60 center" color="red" @click="emit('close')">
           Cancel
         </UButton>

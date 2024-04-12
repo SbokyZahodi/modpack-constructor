@@ -1,7 +1,7 @@
 <script lang='ts' setup>
 type ILoader = 'Forge' | 'Fabric' | 'All' | 'NeoForge' | 'Quilt'
 
-const loader = ref(useRoute().query.loader ?? 'All') as Ref<ILoader>
+const loader = ref(getQuery('loader', 'All')) as Ref<ILoader>
 
 const items = [{
   label: 'All',
@@ -28,7 +28,7 @@ function setLoader(event: number) {
 </script>
 
 <template>
-  <div class="flex gap-2 my-2">
-    <UTabs :items="items" :default-index="currentIndex" :ui="{ base: 'w-80 md:w-100', list: { tab: { base: 'p-3 font-semibold' } } }" @change="setLoader($event)" />
+  <div>
+    <UTabs v-bind="$attrs" :items="items" :default-index="currentIndex" :ui="{ base: 'w-80 md:w-100', list: { tab: { base: 'p-3 font-semibold' } } }" @change="setLoader($event)" />
   </div>
 </template>

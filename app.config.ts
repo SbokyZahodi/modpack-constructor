@@ -5,6 +5,18 @@ export default defineAppConfig({
 
     button: {
       base: 'transition',
+      font: 'font-semibold',
+
+      color: {
+        red: {
+          outline: 'hover:bg-red-500 border border-red-500 text-red-500 hover:text-white',
+        },
+      },
+
+    },
+
+    notifications: {
+      position: 'bottom-0',
     },
 
     modal: {
@@ -16,35 +28,7 @@ export default defineAppConfig({
     },
 
     slideover: {
-      wrapper: 'fixed inset-0 transition transform flex z-50',
-      overlay: {
-        base: 'fixed inset-0 transition-opacity',
-        background: 'bg-gray-200/75 dark:bg-gray-800/75',
-        transition: {
-          enter: 'ease-in-out duration-500',
-          enterFrom: 'opacity-0',
-          enterTo: 'opacity-100',
-          leave: 'ease-in-out duration-500',
-          leaveFrom: 'opacity-100',
-          leaveTo: 'opacity-0',
-        },
-      },
       base: 'relative flex-1 flex flex-col w-full !transform focus:outline-none',
-      background: 'bg-white dark:bg-gray-900',
-      ring: '',
-      rounded: '',
-      padding: '',
-      shadow: 'shadow-xl',
-      width: 'w-screen max-w-md',
-      translate: {
-        base: 'translate-x-0',
-        left: '-translate-x-full rtl:translate-x-full',
-        right: 'translate-x-full rtl:-translate-x-full',
-      },
-      transition: {
-        enter: 'transform transition ease-in-out duration-300',
-        leave: 'transform transition ease-in-out duration-200',
-      },
     },
 
     pagination: {
