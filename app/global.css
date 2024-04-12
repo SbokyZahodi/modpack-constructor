@@ -3,19 +3,14 @@
 .no-scroolbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
-    
 }
-
-/* You can put there global styles */
 
 * {
     box-sizing: border-box;
 }
 
-/* You can put there global styles */
 body {
     font-family: 'Montserrat', sans-serif;
-    /* background: #F6F7F8; */
 }
 
 

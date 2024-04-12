@@ -68,7 +68,7 @@ const modsByTab = computed(() => mods.value?.filter(mod => mod.project_type === 
                 <UButton icon="material-symbols:download" variant="ghost">
                   Download
                 </UButton>
-                <UButton icon="ph:share-fat" variant="ghost" @click="copyURLToClipboard()">
+                <UButton icon="ph:share-fat" variant="ghost" @click="HCopyToClipboard()">
                   Share
                 </UButton>
               </div>
