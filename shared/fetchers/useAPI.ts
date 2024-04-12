@@ -6,7 +6,6 @@ export function useAPI<T>(url: string | (() => string), options: UseFetchOptions
 
   const defaults: UseFetchOptions<T> = {
     baseURL: config.public.api,
-    key: url,
   }
 
   const params = defu(options, defaults)

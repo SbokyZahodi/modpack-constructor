@@ -15,7 +15,7 @@ watch(modpack.value, () => {
   setQuery('modpack', JSON.stringify(modpack.value))
 }, { immediate: false })
 
-const { data: mods } = await useLazyAPI<IMod[]>(() => `projects?ids=${JSON.stringify(modpack.value.modlist)}`, {
+const { data: mods } = await useAPI<IMod[]>(() => `projects?ids=${JSON.stringify(modpack.value.modlist)}`, {
   immediate: true,
 })
 

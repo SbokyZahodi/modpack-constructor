@@ -10,7 +10,7 @@ const { modpack } = useModpack()
 
 const isModExist = computed(() => Boolean(mod.value))
 
-const { data, pending, execute: fetchMod } = await useLazyAPI<IModInfo>(() => `project/${mod.value}`)
+const { data, pending, execute: fetchMod } = await useAPI<IModInfo>(() => `project/${mod.value}`)
 
 const latestVersion = computed(() => data.value?.game_versions.at(-1))
 
