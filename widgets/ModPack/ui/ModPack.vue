@@ -32,7 +32,7 @@ const modsByTab = computed(() => mods.value?.filter(mod => mod.project_type === 
 
         <div class="mt-5 overflow-auto hide-scrollbar h-80%">
           <div v-if="mods">
-            <TransitionExpand group class="grid grid-cols-2 gap-2">
+            <TransitionExpand group class="grid gridy gap-2">
               <div v-for="mod in modsByTab" :key="mod.slug" class="relative" :mod="mod">
                 <ModEntity class="" :mod="mod" />
 

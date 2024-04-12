@@ -9,12 +9,12 @@ defineProps<{
 
 <template>
   <template v-if="!pending">
-    <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+    <div class="gap-5 gridy-300">
       <ModEntity v-for="mod in mods" :key="mod.slug" :mod="mod" @click="setQuery('mod', mod.project_id)" />
     </div>
   </template>
 
-  <div v-if="pending" class="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mt-5">
+  <div v-if="pending" class="gridy-300 gap-5 mt-5">
     <USkeleton v-for="n in 12" :key="n" class="h-40" />
   </div>
 </template>
