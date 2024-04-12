@@ -25,7 +25,7 @@ watch(() => selectedCategories.value, () => {
 
 <template>
   <div class="flex gap-4 overflow-auto hide-scrollbar">
-    <UButton v-for="category in modCategories" :key="category.name" class="p-2 gap-2 center" :variant="selectedCategories.includes(category.name) ? 'solid' : 'outline'" @click="addCategory(category.name)">
+    <UButton v-for="category in modCategories" :key="category.name" class="gap-2 p-2 center" :variant="selectedCategories.includes(category.name) ? 'solid' : 'outline'" @click="addCategory(category.name)">
       <div alt="" class="size-5" v-html="category.icon" />
       {{ category.name }}
     </UButton>

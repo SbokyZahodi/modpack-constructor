@@ -6,7 +6,7 @@ import { ToggleDarkMode } from '~/features/ToggleDarkMode'
   <div class="p-4">
     <UContainer class="flex justify-end items-center lg:justify-center">
       <div class="flex gap-2">
-        <ToggleDarkMode color="white" class="size-12 center rounded-xl" />
+        <ToggleDarkMode color="white" class="center rounded-xl size-12" />
 
         <UButton color="white" class="size-12 center rounded-xl text-3xl" icon="uil:github" />
       </div>

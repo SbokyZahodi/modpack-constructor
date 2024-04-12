@@ -60,7 +60,7 @@ function close() {
         <img :src="data?.icon_url" class="rounded-xl size-40 m-5">
       </div>
 
-      <div class="text-center font-bold text-3xl mt-4">
+      <div class="mt-4 text-center font-bold text-3xl">
         {{ data?.title }}
       </div>
 
@@ -73,7 +73,7 @@ function close() {
 
         <div>
           <UPopover mode="hover" :popper="{ placement: 'bottom-end' }">
-            <UButton variant="outline" class="w-40 center mt-2">
+            <UButton variant="outline" class="center mt-2 w-40">
               loaders
             </UButton>
 
@@ -105,9 +105,9 @@ function close() {
           class: '',
         }"
 
-        :ui="{ item: 'snap-end' }" arrows class="mt-4 h-70 rounded-xl overflow-hidden"
+        :ui="{ item: 'snap-end' }" arrows class="mt-4 rounded-xl h-70 overflow-hidden"
       >
-        <NuxtImg :src="item" placeholder class="w-100 h-70" draggable="false" />
+        <NuxtImg :src="item" placeholder class="h-70 w-100" draggable="false" />
       </UCarousel>
 
       <div class="absolute bottom-0 left-0 w-full p-2">
