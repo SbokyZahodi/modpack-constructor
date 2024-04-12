@@ -30,7 +30,7 @@ export default defineNuxtConfig({
 
   site: {
     url: 'https://example.com',
-    name: 'The minecraft modpack constructor',
+    name: 'Build-Axe',
     description: 'Minecraft modpack constructor in browser',
     defaultLocale: 'en',
   },

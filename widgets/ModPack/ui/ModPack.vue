@@ -32,13 +32,13 @@ const modsByTab = computed(() => mods.value?.filter(mod => mod.project_type === 
 
 <template>
   <USlideover v-model="isSlideOpen" side="left" prevent-close @click="isSlideOpen = false">
-    <div class="p-2 h-full relative w-200 bg-white dark:bg-dark-600">
+    <div class="h-full p-2 relative w-200 bg-white dark:bg-dark-600">
       <div class="gap-2 w-full items-end">
         <UTabs :items="tabsItems" :default-index="tabsItems.findIndex((el) => el.raw === currentFilter)" @change="currentFilter = tabsItems[$event].raw" />
       </div>
 
       <div class="mt-5 overflow-auto hide-scrollbar h-80%">
-        <div v-if="mods">
+        <div v-if="modsByTab?.length">
           <TransitionExpand group>
             <div v-for="mod in modsByTab" :key="mod.slug" class="relative my-2" :mod="mod">
               <ModEntity class="" :mod="mod" />
@@ -49,6 +49,10 @@ const modsByTab = computed(() => mods.value?.filter(mod => mod.project_type === 
             </div>
           </TransitionExpand>
         </div>
+
+        <UNotFound v-else class="h-full">
+          Seems... <br> here is empty <br> Maybe add mods?
+        </UNotFound>
       </div>
 
       <div class="absolute left-0 p-2 w-full bottom-0">

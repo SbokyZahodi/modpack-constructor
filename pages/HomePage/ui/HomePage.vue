@@ -73,13 +73,16 @@ const { data, pending } = await useAPI<{ limit: number, offset: number, total_hi
     <UInput v-model="modName" class="" size="xl" placeholder="Search mod" trailing-icon="line-md:search" />
 
     <SelectCategory class="my-4" />
-    <div class="items-center my-4 justify-between md:flex">
+    <div class="my-4 items-center justify-between md:flex">
       <SelectLoader v-if="HGetQuery('project_type') === 'mod'" />
       <UPagination v-model="page" :total="data?.total_hits" :page-count="20" />
     </div>
 
     <div class="my-4">
-      <ModList :mods="data?.hits" :pending="pending" />
+      <ModList v-if="data?.hits.length" :mods="data?.hits" :pending="pending" />
+      <UNotFound v-else class="h-100">
+        I can't...
+      </UNotFound>
     </div>
   </UContainer>
 </template>
