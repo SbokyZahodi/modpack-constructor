@@ -4,6 +4,7 @@ interface IModpack {
   modlist: string[]
   loader: Loader
   version: string
+  dependenciesAutoinstall: boolean
 }
 
 export default () => {
@@ -11,6 +12,7 @@ export default () => {
     modlist: [],
     loader: 'Forge',
     version: '1.20.1',
+    dependenciesAutoinstall: true,
   }
 
   const modpack = useState<IModpack>('modpack', () => {
@@ -34,10 +36,6 @@ export default () => {
     modpack.value.modlist = modpack.value.modlist.filter(slug => slug !== modSlug)
     useToast().add({ title: 'Mod removed', icon: 'ic:baseline-delete' })
   }
-
-  // watch(modpack.value, () => {
-  //   setQuery('modpack', JSON.stringify(modpack.value))
-  // }, { immediate: false })
 
   return {
     modpack,

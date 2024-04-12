@@ -1,5 +1,5 @@
 <script lang='ts' setup>
-import type { ICategory } from '~/shared/types/ICategory'
+import type { ICategory } from '~/shared/api/ICategory'
 
 const { data } = await useAPI<ICategory[]>('tag/category')
 

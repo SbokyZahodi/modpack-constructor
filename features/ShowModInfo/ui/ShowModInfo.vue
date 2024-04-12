@@ -1,7 +1,7 @@
 <script lang='ts' setup>
 import ModInfoSkeleton from './ModInfoSkeleton.vue'
 import { useModpack } from '~/widgets/ModPack'
-import type { IModInfo } from '~/shared/types/IModInfo'
+import type { IModInfo } from '~/shared/api/IModInfo'
 
 const { addMod } = useModpack()
 
@@ -10,7 +10,12 @@ const { modpack } = useModpack()
 
 const isModExist = computed(() => Boolean(mod.value))
 
-const { data, pending, execute: fetchMod } = await useAPI<IModInfo>(() => `project/${mod.value}`)
+const { data, pending, execute: fetchMod } = await useAPI<IModInfo>(() => `project/${mod.value}`, {
+  onRequest({ request, options }) {
+    if (request.toString().includes('null'))
+      options.signal = false
+  },
+})
 
 const latestVersion = computed(() => data.value?.game_versions.at(-1))
 
@@ -43,13 +48,13 @@ onMounted(() => {
     fetchMod()
 })
 
-function clear() {
+function close() {
   setQuery('mod', null)
 }
 </script>
 
 <template>
-  <USlideover v-model="isModExist" :ui="{ base: 'px-5' }" @close="clear">
+  <USlideover v-model="isModExist" :ui="{ base: 'px-5' }" @close="close">
     <div v-if="!pending" class="overflow-auto hide-scrollbar h-90% px-2">
       <div class="center">
         <img :src="data?.icon_url" class="rounded-xl size-40 m-5">
@@ -100,7 +105,7 @@ function clear() {
           class: '',
         }"
 
-        :ui="{ item: 'snap-end' }" arrows class="mt-4 h-70 w-100 rounded-xl overflow-hidden"
+        :ui="{ item: 'snap-end' }" arrows class="mt-4 h-70 rounded-xl overflow-hidden"
       >
         <NuxtImg :src="item" placeholder class="w-100 h-70" draggable="false" />
       </UCarousel>

@@ -58,6 +58,10 @@ const modsByTab = computed(() => mods.value?.filter(mod => mod.project_type === 
                 <UButton class="center" variant="ghost">
                   {{ modpack.version }}
                 </UButton>
+
+                <div>
+                  <UCheckbox v-model="modpack.dependenciesAutoinstall" label="Install dependencies" size="xl" :ui="{ form: 'size-5' }" />
+                </div>
               </div>
 
               <div class="flex gap-4">

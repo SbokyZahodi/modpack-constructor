@@ -49,7 +49,7 @@ function saveChanges() {
 
       <UAlert v-if="modpack.modlist.length" title="If you change a version the modpack will be reset" icon="octicon:alert-16" description="" color="red" variant="outline" />
 
-      <div class="flex absolute bottom-2 justify-around right-0 w-full">
+      <div class="flex absolute w-full bottom-2 justify-around right-0">
         <UButton size="xl" variant="outline" class="w-60 center" color="red" @click="emit('close')">
           Cancel
         </UButton>
