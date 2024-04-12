@@ -15,7 +15,7 @@ watch(modpack.value, () => {
   setQuery('modpack', JSON.stringify(modpack.value))
 }, { immediate: false })
 
-const { data: mods } = await useAPI<IMod[]>(() => `projects?ids=${JSON.stringify(modpack.value.modlist)}`, {
+const { data: mods, pending } = await useAPI<IMod[]>(() => `projects?ids=${JSON.stringify(modpack.value.modlist)}`, {
   immediate: true,
 })
 
@@ -32,11 +32,13 @@ const modsByTab = computed(() => mods.value?.filter(mod => mod.project_type === 
 
         <div class="mt-5 overflow-auto hide-scrollbar h-80%">
           <div v-if="mods">
-            <TransitionExpand group class="grid gridy gap-2">
-              <div v-for="mod in modsByTab" :key="mod.slug" class="relative" :mod="mod">
+            <TransitionExpand group>
+              <div v-for="mod in modsByTab" :key="mod.slug" class="relative my-2" :mod="mod">
                 <ModEntity class="" :mod="mod" />
 
-                <UButton color="red" variant="outline" icon="octicon:trash-16" class="absolute right-4 top-4" @click="removeMod(mod.slug)" />
+                <UTooltip text="Remove mod" class="absolute right-4 top-4">
+                  <UButton color="red" variant="outline" :loading="pending" icon="octicon:trash-16" class="" @click="removeMod(mod.slug)" />
+                </UTooltip>
               </div>
             </TransitionExpand>
           </div>
