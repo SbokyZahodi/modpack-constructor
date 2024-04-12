@@ -8,7 +8,9 @@ import { ToggleDarkMode } from '~/features/ToggleDarkMode'
       <div class="flex gap-2">
         <ToggleDarkMode color="white" class="center rounded-xl size-12" />
 
-        <UButton color="white" class="size-12 center rounded-xl text-3xl" icon="uil:github" />
+        <a href="https://github.com/SbokyZahodi/modpack-constructor">
+          <UButton color="white" class="size-12 center rounded-xl text-3xl" icon="uil:github" />
+        </a>
       </div>
     </UContainer>
   </div>
