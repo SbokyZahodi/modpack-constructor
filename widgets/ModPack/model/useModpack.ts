@@ -16,7 +16,7 @@ export default () => {
   }
 
   const modpack = useState<IModpack>('modpack', () => {
-    return JSON.parse(getQuery('modpack', JSON.stringify(defaultValue)))
+    return JSON.parse(HGetQuery('modpack', JSON.stringify(defaultValue)))
   })
 
   function setVersion(version: string) {

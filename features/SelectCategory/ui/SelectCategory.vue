@@ -19,7 +19,7 @@ function addCategory(category: string) {
 watch(() => selectedCategories.value, () => {
   const cats = selectedCategories.value.length ? selectedCategories.value.join(',') : null
 
-  setQuery('categories', cats)
+  HSetQuery('categories', cats)
 }, { deep: true })
 </script>
 

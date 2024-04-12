@@ -12,7 +12,7 @@ const currentFilter = ref(tabsItems[0].raw)
 const { modpack, removeMod } = useModpack()
 
 watch(modpack.value, () => {
-  setQuery('modpack', JSON.stringify(modpack.value))
+  HSetQuery('modpack', JSON.stringify(modpack.value))
 }, { immediate: false })
 
 const { data: mods, pending } = await useAPI<IMod[]>(() => `projects?ids=${JSON.stringify(modpack.value.modlist)}`, {

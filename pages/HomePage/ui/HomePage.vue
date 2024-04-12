@@ -17,7 +17,7 @@ const categories = computed(() => {
 })
 
 const project_type = computed(() => {
-  return getQuery('project_type', 'mod')
+  return HGetQuery('project_type', 'mod')
 })
 
 const facets = computed(() => {
@@ -49,7 +49,7 @@ const page = ref(routePage.value)
 const offset = computed(() => (page.value - 1) * 20)
 
 watch(() => page.value, () => {
-  setQuery('page', String(page.value))
+  HSetQuery('page', String(page.value))
 })
 
 watch(() => facets.value, () => {
@@ -62,7 +62,7 @@ const { data, pending } = await useAPI<{ limit: number, offset: number, total_hi
     limit: 20,
     facets,
     offset,
-    project_type: getQuery('project_type', 'mod'),
+    project_type: HGetQuery('project_type', 'mod'),
   },
 })
 </script>
@@ -72,9 +72,9 @@ const { data, pending } = await useAPI<{ limit: number, offset: number, total_hi
     <SelectProjectType />
     <UInput v-model="modName" class="" size="xl" placeholder="Search mod" trailing-icon="line-md:search" />
 
-    <!-- <SelectCategory class="my-4" /> -->
+    <SelectCategory class="my-4" />
     <div class="md:flex items-center my-4 justify-between">
-      <SelectLoader v-if="getQuery('project_type') === 'mod'" />
+      <SelectLoader v-if="HGetQuery('project_type') === 'mod'" />
       <UPagination v-model="page" :total="data?.total_hits" :page-count="20" />
     </div>
 

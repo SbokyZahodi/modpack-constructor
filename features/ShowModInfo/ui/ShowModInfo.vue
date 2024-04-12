@@ -5,7 +5,7 @@ import type { IModInfo } from '~/shared/api/IModInfo'
 
 const { addMod } = useModpack()
 
-const mod = computed(() => getQuery('mod', null))
+const mod = computed(() => HGetQuery('mod', null))
 const { modpack } = useModpack()
 
 const isModExist = computed(() => Boolean(mod.value))
@@ -40,7 +40,7 @@ const isModCompatible = computed(() => {
 function addMods() {
   if (data.value)
     addMod(data.value.slug)
-  setQuery('mod', null)
+  HSetQuery('mod', null)
 }
 
 onMounted(() => {
@@ -49,7 +49,7 @@ onMounted(() => {
 })
 
 function close() {
-  setQuery('mod', null)
+  HSetQuery('mod', null)
 }
 </script>
 

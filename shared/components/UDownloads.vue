@@ -6,6 +6,6 @@ defineProps<{
 
 <template>
   <div class="flex gap-2 items-center">
-    {{ normalizeNumber(downloads ?? 0) }} <UIcon name="ic:sharp-download" class="size-5 text-cyan" />
+    {{ toSplitNumber(downloads ?? 0) }} <UIcon name="ic:sharp-download" class="size-5 text-cyan" />
   </div>
 </template>
