@@ -1,6 +1,6 @@
 <script lang='ts' setup>
 import { useModpack } from '..'
-import ModPackOptions from './ModPackOptions.vue'
+import ModPackConfigurator from './ModPackConfigurator.vue'
 import { ModEntity } from '~/entities/ModEntity'
 
 const isSlideOpen = ref(false)
@@ -55,7 +55,7 @@ const modsByTab = computed(() => mods.value?.filter(mod => mod.project_type === 
         </UNotFound>
       </div>
 
-      <div class="absolute left-0 p-2 w-full bottom-0">
+      <div class="absolute p-2 w-full left-0 bottom-0">
         <UCard>
           <div class="flex justify-between items-center">
             <div class="flex items-center gap-4">
@@ -89,7 +89,7 @@ const modsByTab = computed(() => mods.value?.filter(mod => mod.project_type === 
     </div>
   </USlideover>
 
-  <ModPackOptions v-model="isOptionsModalOpened" @close="isOptionsModalOpened = false" />
+  <ModPackConfigurator v-model="isOptionsModalOpened" @close-modal="isOptionsModalOpened = false" />
 
   <UTooltip :popper="{ placement: 'right' }" text="Open modpack" :shortcuts="['Alt', 'A']" class="text-xl fixed left-5 top-5">
     <UButton size="xl" icon="streamline:backpack-solid" color="sky" @click="isSlideOpen = true" />

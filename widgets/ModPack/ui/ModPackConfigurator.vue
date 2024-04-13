@@ -1,7 +1,7 @@
 <script lang='ts' setup>
 import { useModpack } from '..'
 
-const emit = defineEmits(['close'])
+const emit = defineEmits(['closeModal'])
 
 const { modpack, setLoader, setVersion } = useModpack()
 
@@ -20,7 +20,7 @@ const majorVersionsOptions = computed<string[]>(() => {
 
 const loaders = [{ label: 'Forge' }, { label: 'Fabric' }, { label: 'NeoForge' }, { label: 'Quilt' }]
 
-const loader = ref('')
+const loader = ref<ILoader>(modpack.value.loader)
 const version = ref('1.20.1')
 
 onMounted(() => {
@@ -32,25 +32,25 @@ function saveChanges() {
   setLoader(loader.value)
   setVersion(version.value)
   useToast().add({ title: 'Modpack settings updated!', icon: 'ic:round-save' })
-  emit('close')
+  emit('closeModal')
 }
 </script>
 
 <template>
   <UModal prevent-close>
-    <div class="p-4 flex flex-col h-120 gap-3">
+    <div class="flex p-4 flex-col h-120 gap-3">
       <div class="font-semibold text-lg">
         Select modpack configuration
       </div>
 
-      <UTabs :items="loaders" :default-index="loaders.findIndex((el) => el.label === modpack.loader)" @change="loader = loaders[$event].label" />
+      <UTabs :items="loaders" :default-index="loaders.findIndex((el) => el.label === modpack.loader)" @change="loader = loaders[$event].label as ILoader" />
 
       <USelectMenu v-model="version" size="lg" :options="majorVersionsOptions" />
 
       <UAlert v-if="modpack.modlist.length" title="If you change a version the modpack will be reset" icon="octicon:alert-16" description="" color="red" variant="outline" />
 
       <div class="flex absolute w-full justify-around bottom-2 right-0">
-        <UButton size="xl" variant="outline" class="center w-60" color="red" @click="emit('close')">
+        <UButton size="xl" variant="outline" class="center w-60" color="red" @click="emit('closeModal')">
           Cancel
         </UButton>
         <UButton size="xl" variant="outline" class="w-60 center" @click="saveChanges">

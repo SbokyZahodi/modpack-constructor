@@ -1,8 +1,6 @@
-type Loader = 'Forge' | 'Fabric' | 'NeoForge' | 'Quilt'
-
 interface IModpack {
   modlist: string[]
-  loader: Loader
+  loader: ILoader
   version: string
   dependenciesAutoinstall: boolean
 }
@@ -21,10 +19,12 @@ export default () => {
 
   function setVersion(version: string) {
     modpack.value.version = version
+    modpack.value.modlist = []
   }
 
-  function setLoader(loader: Loader) {
+  function setLoader(loader: ILoader) {
     modpack.value.loader = loader
+    modpack.value.modlist = []
   }
 
   function addMod(slug: string) {

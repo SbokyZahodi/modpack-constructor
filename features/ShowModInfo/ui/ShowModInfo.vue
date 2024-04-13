@@ -13,7 +13,7 @@ const isModExist = computed(() => Boolean(mod.value))
 const { data, pending, execute: fetchMod } = await useAPI<IModInfo>(() => `project/${mod.value}`, {
   onRequest({ request, options }) {
     if (request.toString().includes('null'))
-      options.signal = false
+      options.signal = new AbortSignal()
   },
 })
 
