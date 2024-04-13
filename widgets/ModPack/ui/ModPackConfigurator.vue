@@ -38,16 +38,26 @@ function saveChanges() {
 
 <template>
   <UModal prevent-close>
-    <div class="flex p-4 flex-col h-120 gap-3">
-      <div class="font-semibold text-lg">
+    <div class="flex p-4 flex-col h-140 gap-3">
+      <div class="font-semibold text-lg text-center mb-2">
         Select modpack configuration
       </div>
 
-      <UTabs :items="loaders" :default-index="loaders.findIndex((el) => el.label === modpack.loader)" @change="loader = loaders[$event].label as ILoader" />
+      <div>
+        <p class="mb-2">
+          Modloader
+        </p>
+        <UTabs :items="loaders" :default-index="loaders.findIndex((el) => el.label === modpack.loader)" @change="loader = (loaders[$event].label as ILoader)" />
+      </div>
 
-      <USelectMenu v-model="version" size="lg" :options="majorVersionsOptions" />
+      <div>
+        <p class="mb-2">
+          Game version
+        </p>
+        <USelectMenu v-model="version" size="lg" :options="majorVersionsOptions" />
+      </div>
 
-      <UAlert v-if="modpack.modlist.length" title="If you change a version the modpack will be reset" icon="octicon:alert-16" description="" color="red" variant="outline" />
+      <UAlert v-if="modpack.modlist.length" class="mt-2" title="If you change a modpack configuration modlist will be reset" icon="octicon:alert-16" description="" color="red" variant="outline" />
 
       <div class="flex absolute w-full justify-around bottom-2 right-0">
         <UButton size="xl" variant="outline" class="center w-60" color="red" @click="emit('closeModal')">
