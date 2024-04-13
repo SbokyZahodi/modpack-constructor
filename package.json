@@ -1,5 +1,5 @@
 {
-  "name": "nuxt-app",
+  "name": "build-axe",
   "type": "module",
   "private": true,
   "scripts": {
@@ -9,8 +9,7 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "update": "yarn upgrade-interactive --latest"
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "@morev/vue-transitions": "^3.0.2",
