@@ -24,8 +24,9 @@ watch(modpack.value, () => {
   HSetQuery('modpack', JSON.stringify(modpack.value))
 }, { immediate: false })
 
-const { data: mods, pending } = await useAPI<IMod[]>(() => `projects?ids=${JSON.stringify(modpack.value.modlist.map(mod => mod.slug))}`, {
+const { data: mods, pending } = await useAPI<IMod[]>(() => `projects?ids=${JSON.stringify(modpack.value.modlist)}`, {
   immediate: true,
+  key: 'modlist',
 })
 
 const modsByTab = computed(() => mods.value?.filter(mod => mod.project_type === currentFilter.value))
@@ -77,7 +78,7 @@ const modsByTab = computed(() => mods.value?.filter(mod => mod.project_type === 
             </div>
 
             <div class="flex gap-4">
-              <DownloadModpack />
+              <DownloadModpack :disabled="pending" />
               <UButton icon="ph:share-fat" variant="ghost" @click="HCopyToClipboard()">
                 Share
               </UButton>

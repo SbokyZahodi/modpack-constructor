@@ -25,8 +25,12 @@ export default () => {
   })
 
   async function downloadModpack() {
-    if (!modpack.value.modlist.length)
+    const modsData = useNuxtData<IModInfo[]>('modlist')
+
+    if (!modsData.data.value?.length) {
       useToast().add({ title: 'No mods installed' })
+      return
+    }
 
     state.value.isFetching = true
 
@@ -36,7 +40,7 @@ export default () => {
     const shadersFolder = zip.folder('shaders')
     const resourcesFolder = zip.folder('resourcepacks')
 
-    const mods = await downloadMods(modpack.value.modlist)
+    const mods = await downloadMods(modsData.data.value)
 
     // Sort by project type | shader > resourcepack > mod
     mods.forEach((mod: ModInfo) => {
@@ -62,7 +66,7 @@ export default () => {
     state.value.progress = 0
   }
 
-  async function downloadMods(modlist: { slug: string, project_type: string }[]): Promise<ModInfo[]> {
+  async function downloadMods(modlist: IModInfo[]): Promise<ModInfo[]> {
     const mods = [] as ModInfo[]
     const dependencies = [] as string[]
 
@@ -78,16 +82,27 @@ export default () => {
         },
       })
 
-      if (!version.data.value?.length)
+      // Check if version compatible with current loader
+      if (!version.data.value)
         continue
 
-      // Add dependencies to list
-      version.data.value[0].dependencies.forEach(dep => dependencies.push(dep.project_id))
+      const compatibleVersion = () => {
+        return version.data.value?.find(v => v.loaders.includes(modpack.value.loader.toLowerCase()))
+          ?? version.data.value?.at(0)
+      }
+
+      const ver = compatibleVersion()
+
+      if (!ver)
+        continue
 
       // Download File
-      const blob = await fetch(version.data.value[0].files[0].url).then(r => r.blob())
+      const blob = await fetch(ver.files[0].url).then(r => r.blob())
 
       mods.push({ project_type: mod.project_type, slug: mod.slug, blob })
+
+      // Add dependencies to list
+      ver.dependencies.forEach(dep => dependencies.push(dep.project_id))
     }
 
     const dependencyMods = await downloadDependencies(dependencies)

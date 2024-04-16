@@ -5,7 +5,7 @@ const { state, downloadModpack } = useDownloadModpack()
 </script>
 
 <template>
-  <UButton icon="material-symbols:download" variant="ghost" @click="downloadModpack">
+  <UButton v-bind="$attrs" icon="material-symbols:download" variant="ghost" @click="downloadModpack">
     Download
   </UButton>
 
