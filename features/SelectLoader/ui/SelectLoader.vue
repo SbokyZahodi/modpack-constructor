@@ -1,6 +1,4 @@
 <script lang='ts' setup>
-type ILoader = 'Forge' | 'Fabric' | 'All' | 'NeoForge' | 'Quilt'
-
 const loader = ref(HGetQuery('loader', 'All')) as Ref<ILoader>
 
 const items = [{

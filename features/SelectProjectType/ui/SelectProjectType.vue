@@ -4,6 +4,11 @@ const items = [{ label: 'Mods', raw: 'mod' }, { label: 'Shaders', raw: 'shader' 
 function selectType(index: number) {
   HSetQuery('project_type', items[index].raw)
 }
+
+onMounted(() => {
+  if (!HGetQuery('project_type'))
+    HSetQuery('project_type', 'mod')
+})
 </script>
 
 <template>
