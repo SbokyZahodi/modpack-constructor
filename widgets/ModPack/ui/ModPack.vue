@@ -1,6 +1,7 @@
 <script lang='ts' setup>
 import { useModpack } from '..'
 import ModPackConfigurator from './ModPackConfigurator.vue'
+import DownloadModpack from './DownloadModpack.vue'
 import { ModEntity } from '~/entities/ModEntity'
 
 const isSlideOpen = ref(false)
@@ -23,7 +24,7 @@ watch(modpack.value, () => {
   HSetQuery('modpack', JSON.stringify(modpack.value))
 }, { immediate: false })
 
-const { data: mods, pending } = await useAPI<IMod[]>(() => `projects?ids=${JSON.stringify(modpack.value.modlist)}`, {
+const { data: mods, pending } = await useAPI<IMod[]>(() => `projects?ids=${JSON.stringify(modpack.value.modlist.map(mod => mod.slug))}`, {
   immediate: true,
 })
 
@@ -40,7 +41,7 @@ const modsByTab = computed(() => mods.value?.filter(mod => mod.project_type === 
       <div class="mt-5 overflow-auto hide-scrollbar h-80%">
         <div v-if="modsByTab?.length">
           <TransitionExpand group>
-            <div v-for="mod in modsByTab" :key="mod.slug" class="relative my-2" :mod="mod">
+            <div v-for="mod in modsByTab" :key="mod.project_id" class="relative my-2" :mod="mod">
               <ModEntity class="" :mod="mod" />
 
               <UTooltip text="Remove mod" class="absolute right-4 top-4">
@@ -76,9 +77,7 @@ const modsByTab = computed(() => mods.value?.filter(mod => mod.project_type === 
             </div>
 
             <div class="flex gap-4">
-              <UButton icon="material-symbols:download" variant="ghost">
-                Download
-              </UButton>
+              <DownloadModpack />
               <UButton icon="ph:share-fat" variant="ghost" @click="HCopyToClipboard()">
                 Share
               </UButton>
