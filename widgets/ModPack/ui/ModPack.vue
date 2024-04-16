@@ -22,6 +22,7 @@ const { modpack, removeMod } = useModpack()
 
 watch(modpack.value, () => {
   HSetQuery('modpack', JSON.stringify(modpack.value))
+  HSetQuery('mod', null)
 }, { immediate: false })
 
 const { data: mods, pending } = await useAPI<IMod[]>(() => `projects?ids=${JSON.stringify(modpack.value.modlist)}`, {
@@ -33,7 +34,7 @@ const modsByTab = computed(() => mods.value?.filter(mod => mod.project_type === 
 </script>
 
 <template>
-  <USlideover v-model="isSlideOpen" side="left" prevent-close @click="isSlideOpen = false">
+  <USlideover v-model="isSlideOpen" side="left">
     <div class="h-full p-2 relative w-200 bg-white dark:bg-dark-600">
       <div class="gap-2 w-full items-end">
         <UTabs :items="tabsItems" :default-index="tabsItems.findIndex((el) => el.raw === currentFilter)" @change="currentFilter = tabsItems[$event].raw" />
