@@ -1,5 +1,5 @@
 import JSZip from 'jszip'
-import { saveAs } from 'file-saver'
+import filesaver from 'file-saver'
 import { useModpack } from '../model'
 
 type Stages = 'Downloading mods...' | 'Download dependencies...'
@@ -54,7 +54,7 @@ export default () => {
 
     // Download zip
     zip.generateAsync({ type: 'blob' }).then((content) => {
-      saveAs(content, `${modpack.value.loader}-${modpack.value.version}.zip`)
+      filesaver.saveAs(content, `${modpack.value.loader}-${modpack.value.version}.zip`)
     })
 
     state.value.isFetching = false

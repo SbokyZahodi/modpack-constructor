@@ -8,7 +8,15 @@ const { addMod } = useModpack()
 const mod = computed(() => HGetQuery('mod', null))
 const { modpack } = useModpack()
 
-const isModExist = computed(() => Boolean(mod.value))
+const isModExist = computed({
+  get() {
+    return Boolean(mod.value)
+  },
+  set(value: boolean) {
+    if (!value)
+      HSetQuery('mod', null)
+  },
+})
 
 const { data, pending, execute: fetchMod } = await useAPI<IModInfo>(() => `project/${mod.value}`, {
   onRequest({ request, options }) {
@@ -48,14 +56,10 @@ onMounted(() => {
   if (mod.value)
     fetchMod()
 })
-
-function close() {
-  HSetQuery('mod', null)
-}
 </script>
 
 <template>
-  <USlideover v-model="isModExist" :ui="{ base: 'px-5' }" @close="close">
+  <USlideover v-model="isModExist" :ui="{ base: 'px-5' }">
     <div v-if="!pending" class="overflow-auto hide-scrollbar h-90% px-2">
       <div class="center">
         <img :src="data?.icon_url" class="rounded-xl size-40 m-5">
