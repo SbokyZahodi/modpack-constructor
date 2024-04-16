@@ -1,5 +1,10 @@
+interface IMod {
+  slug: string
+  project_type: string
+}
+
 interface IModpack {
-  modlist: string[]
+  modlist: IMod[]
   loader: ILoader
   version: string
   dependenciesAutoinstall: boolean
@@ -27,13 +32,13 @@ export default () => {
     modpack.value.modlist = []
   }
 
-  function addMod(slug: string) {
+  function addMod(slug: IMod) {
     modpack.value.modlist.push(slug)
     useToast().add({ title: 'Mod added', icon: 'ic:baseline-add' })
   }
 
   function removeMod(modSlug: string) {
-    modpack.value.modlist = modpack.value.modlist.filter(slug => slug !== modSlug)
+    modpack.value.modlist = modpack.value.modlist.filter(slug => slug.slug !== modSlug)
     useToast().add({ title: 'Mod removed', icon: 'ic:baseline-delete' })
   }
 

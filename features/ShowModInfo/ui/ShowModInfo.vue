@@ -31,7 +31,7 @@ const isModCompatible = computed(() => {
   if (!data.value?.game_versions.includes(modpack.value.version))
     return { message: 'Mod is not compatible with your version', compatible: false }
 
-  if (modpack.value.modlist.includes(data.value?.slug))
+  if (modpack.value.modlist.some(mod => mod.slug === data.value?.slug))
     return { message: 'Mod is already in modpack', compatible: false }
 
   return success
@@ -39,7 +39,8 @@ const isModCompatible = computed(() => {
 
 function addMods() {
   if (data.value)
-    addMod(data.value.slug)
+    addMod({ slug: data.value.slug, project_type: data.value.project_type })
+
   HSetQuery('mod', null)
 }
 
