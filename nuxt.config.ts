@@ -16,6 +16,10 @@ export default defineNuxtConfig({
     },
   },
 
+  typescript: {
+    typeCheck: true,
+  },
+
   imports: {
     dirs: [
       'shared/api',
