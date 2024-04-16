@@ -105,9 +105,14 @@ export default () => {
       ver.dependencies.forEach(dep => dependencies.push(dep.project_id))
     }
 
-    const dependencyMods = await downloadDependencies(dependencies)
+    if (modpack.value.dependenciesAutoinstall) {
+      const dependencyMods = await downloadDependencies(dependencies)
 
-    return mods.concat(dependencyMods)
+      return mods.concat(dependencyMods)
+    }
+    else {
+      return mods
+    }
   }
 
   async function downloadDependencies(versions: string[]): Promise<ModInfo[]> {

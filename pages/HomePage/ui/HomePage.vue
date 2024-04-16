@@ -6,6 +6,7 @@ import { ModList } from '~/widgets/ModList'
 import { useModpack } from '~/widgets/ModPack'
 
 const modName = ref('')
+
 const { modpack } = useModpack()
 
 const loader = computed(() => {
