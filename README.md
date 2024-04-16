@@ -1,64 +1,26 @@
-# Nuxt 3 + FSD + UnoCSS
+## The Minecraft modpack constructor in browser
+### Powered by [Modrinth](https://modrinth.com/) 💡
 
-Template for development on Nuxt 3 in the Feature-Sliced Design architecture
+### Goals
 
-## Includes
+- 🌐 **Web-Based**: Nothing to install
 
-✅ Nuxt 3
+- 🔍 **Search & Filter**: Easily find the mods you're looking for.
+- 🔗 **Shareable**: Share mods with a URL.
+- ⚙️ **Auto-Updates**: Install latest mods versions.
+- 🛠️ **Dependencies**: Dependencies are installed automatically.
 
-✅ FSD (Feature-Sliced Design)
+### Stack
 
-✅ Uno CSS
+- **Nuxt.js**:
 
-✅ ESLint (Preset by @antfu)
+- **UnoCSS**:
 
-## Developer Experience
+- **FSD Architecture**:
 
-* [FSD Slices Generator](https://marketplace.visualstudio.com/items?itemName=SbokyZahodi.fsd-slices) — The VS Code extension that gives you the ability to quickly create FSD slices
+- **Nuxt UI**
 
-* [Feature-Sliced Design Helper](https://plugins.jetbrains.com/plugin/21638-feature-sliced-design-helper) — IntelliJ IDEA plugin that lets you quickly create layers, slices, and segments
+## Bug Reporting
+### 🐛 Found a Bug?
 
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-```
-
-[![code style](https://antfu.me/badge-code-style.svg)](https://github.com/antfu/eslint-config)
+To report a bug, please open an [Issue](https://github.com/SbokyZahodi/modpack-constructor/issues)
