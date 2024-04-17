@@ -29,7 +29,7 @@ export default defineAppConfig({
 
     pagination: {
       wrapper: 'flex items-center -space-x-px gap-2',
-      base: 'rounded-md size-9 center',
+      base: 'rounded-md size-8 md:size-9 center',
       default: {
         inactiveButton: {
           color: 'white',
