@@ -6,6 +6,6 @@ defineProps<{
 
 <template>
   <div class="flex items-center gap-2">
-    {{ toSplitNumber(downloads ?? 0) }} <UIcon name="ic:sharp-download" class="size-5 text-cyan" />
+    {{ toSplitNumber(downloads ?? 0) }} <UIcon :name="ICONS.DOWNLOAD" class="size-5 text-cyan" />
   </div>
 </template>

@@ -24,6 +24,7 @@ export default defineNuxtConfig({
     dirs: [
       'shared/api',
       'shared/ui',
+      'shared/config',
       // You can specify here any folder from which you want to auto-import
     ],
   },
