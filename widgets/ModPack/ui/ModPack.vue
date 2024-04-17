@@ -37,8 +37,8 @@ const modsByTab = computed(() => mods.value?.filter(mod => mod.project_type === 
   <USlideover v-model="isSlideOpen" side="left" :ui="{ width: 'max-w-3xl' }">
     <div class="h-full p-2">
       <div class="w-full justify-between items-center gap-4 flex">
-        <UButton tabindex="0" icon="radix-icons:cross-2" size="lg" variant="soft" @click="isSlideOpen = false" />
         <UTabs class="w-full pt-2" :items="tabsItems" :default-index="tabsItems.findIndex((el) => el.raw === currentFilter)" @change="currentFilter = tabsItems[$event].raw" />
+        <UCloseButton @click="isSlideOpen = false" />
       </div>
 
       <div class="mt-5 overflow-auto hide-scrollbar h-80%">

@@ -25,6 +25,10 @@ const { data, pending, execute: fetchMod } = await useAPI<IModInfo>(() => `proje
   },
 })
 
+watchEffect(() => {
+  console.log(data.value)
+})
+
 const latestVersion = computed(() => data.value?.game_versions.at(-1))
 
 const isModCompatible = computed(() => {
@@ -60,7 +64,9 @@ onMounted(() => {
 
 <template>
   <USlideover v-model="isModExist" :ui="{ base: 'px-5' }">
-    <div v-if="!pending" class="overflow-auto hide-scrollbar h-90% px-2">
+    <div v-if="!pending && data" class="overflow-auto hide-scrollbar h-90% px-2">
+      <UCloseButton class="absolute right-4 mt4" @click="isModExist = false" />
+
       <div class="center">
         <img :src="data?.icon_url" class="rounded-xl size-40 m-5">
       </div>
