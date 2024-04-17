@@ -10,6 +10,7 @@ export default defineNuxtConfig({
   ],
   css: ['@/app/global.css'],
 
+  ssr: false,
   runtimeConfig: {
     public: {
       api: 'https://api.modrinth.com/v2',
