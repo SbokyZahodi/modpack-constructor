@@ -135,7 +135,9 @@ export default () => {
       const blob = await fetch(version.data.value[0].files[0].url).then(r => r.blob())
 
       // Fetch project info to get project_type
-      const project = await useAPI<IModInfo>(() => `project/${version.data.value?.at(0)?.project_id}`)
+      const project = await useAPI<IModInfo>(() => `project/${version.data.value?.at(0)?.project_id}`, {
+        server: false,
+      })
 
       const firstItem = project.data.value
 

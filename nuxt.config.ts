@@ -10,7 +10,6 @@ export default defineNuxtConfig({
   ],
   css: ['@/app/global.css'],
 
-  ssr: false,
   runtimeConfig: {
     public: {
       api: 'https://api.modrinth.com/v2',
@@ -36,9 +35,10 @@ export default defineNuxtConfig({
 
   site: {
     url: 'https://example.com',
-    name: 'Build-Axe',
-    description: 'Minecraft modpack constructor in browser',
+    name: 'MC',
+    description: 'The Minecraft modpack constructor in browser',
     defaultLocale: 'en',
+
   },
 
   components: {

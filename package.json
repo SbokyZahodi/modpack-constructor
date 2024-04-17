@@ -1,7 +1,10 @@
 {
-  "name": "build-axe",
+  "name": "modpack-constructor",
   "type": "module",
   "private": true,
+  "author": "SbokyZahodi (https://github.com/SbokyZahodi)",
+  "license": "MIT",
+  "homepage": "https://github.com/SbokyZahodi/modpack-constructor",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
