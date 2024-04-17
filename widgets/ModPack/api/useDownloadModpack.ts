@@ -53,7 +53,7 @@ export default () => {
         resourcesFolder?.file(`${slug}.zip`, blob)
 
       if (mod.project_type === 'mod')
-        modsFolder?.file(`${slug}.zip`, blob)
+        modsFolder?.file(`${slug}.jar`, blob)
     })
 
     // Download zip
