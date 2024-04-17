@@ -25,10 +25,6 @@ const { data, pending, execute: fetchMod } = await useAPI<IModInfo>(() => `proje
   },
 })
 
-watchEffect(() => {
-  console.log(data.value)
-})
-
 const latestVersion = computed(() => data.value?.game_versions.at(-1))
 
 const isModCompatible = computed(() => {

@@ -18,7 +18,7 @@ defineProps<{
     <USkeleton v-for="n in 12" :key="n" class="h-40" />
   </div>
 
-  <UNotFound v-if="!mods?.length && !pending" class="h-full">
+  <UNotFound v-if="!mods?.length && !pending" class="h-100">
     Nothing found
   </UNotFound>
 </template>

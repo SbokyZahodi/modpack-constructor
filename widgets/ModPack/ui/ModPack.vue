@@ -22,7 +22,6 @@ const { modpack, removeMod } = useModpack()
 
 watch(modpack.value, () => {
   HSetQuery('modpack', JSON.stringify(modpack.value))
-  // HSetQuery('mod', null)
 }, { immediate: false })
 
 const { data: mods, pending } = await useAPI<IMod[]>(() => `projects?ids=${JSON.stringify(modpack.value.modlist)}`, {
@@ -79,7 +78,7 @@ const modsByTab = computed(() => mods.value?.filter(mod => mod.project_type === 
               </div>
             </div>
 
-            <div class="flex gap-4">
+            <div class="flex gap-4 mt-2 md:mt-0">
               <DownloadModpack :disabled="pending" />
               <UButton :icon="ICONS.SHARE" variant="ghost" @click="HCopyToClipboard()">
                 Share
