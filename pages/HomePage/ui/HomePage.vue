@@ -65,6 +65,7 @@ const { data, pending } = await useAPI<{ limit: number, offset: number, total_hi
     offset,
     project_type: HGetQuery('project_type', 'mod'),
   },
+
 })
 </script>
 
@@ -76,14 +77,11 @@ const { data, pending } = await useAPI<{ limit: number, offset: number, total_hi
     <SelectCategory class="my-4" />
     <div class="my-4 items-center justify-between md:flex">
       <SelectLoader v-if="HGetQuery('project_type') === 'mod', 'mod'" />
-      <UPagination v-model="page" :total="data!.total_hits" :page-count="20" />
+      <UPagination v-if="data" v-model="page" :total="data.total_hits" :page-count="20" />
     </div>
 
     <div class="my-4">
-      <ModList v-if="data?.hits.length" :mods="data?.hits" :pending="pending" />
-      <UNotFound v-else class="h-100">
-        I can't...
-      </UNotFound>
+      <ModList :mods="data?.hits ?? []" :pending="pending" />
     </div>
   </UContainer>
 </template>

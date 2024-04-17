@@ -17,4 +17,8 @@ defineProps<{
   <div v-if="pending" class="gridy-300 gap-5 mt-5">
     <USkeleton v-for="n in 12" :key="n" class="h-40" />
   </div>
+
+  <UNotFound v-if="!mods?.length && !pending" class="h-full">
+    Nothing found
+  </UNotFound>
 </template>

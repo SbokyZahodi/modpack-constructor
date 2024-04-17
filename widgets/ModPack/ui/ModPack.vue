@@ -22,7 +22,7 @@ const { modpack, removeMod } = useModpack()
 
 watch(modpack.value, () => {
   HSetQuery('modpack', JSON.stringify(modpack.value))
-  HSetQuery('mod', null)
+  // HSetQuery('mod', null)
 }, { immediate: false })
 
 const { data: mods, pending } = await useAPI<IMod[]>(() => `projects?ids=${JSON.stringify(modpack.value.modlist)}`, {
@@ -34,10 +34,11 @@ const modsByTab = computed(() => mods.value?.filter(mod => mod.project_type === 
 </script>
 
 <template>
-  <USlideover v-model="isSlideOpen" side="left">
-    <div class="h-full p-2 relative w-200 bg-white dark:bg-dark-600">
-      <div class="gap-2 w-full items-end">
-        <UTabs :items="tabsItems" :default-index="tabsItems.findIndex((el) => el.raw === currentFilter)" @change="currentFilter = tabsItems[$event].raw" />
+  <USlideover v-model="isSlideOpen" side="left" :ui="{ width: 'max-w-3xl' }">
+    <div class="h-full p-2">
+      <div class="w-full justify-between items-center gap-4 flex">
+        <UButton tabindex="0" icon="radix-icons:cross-2" size="lg" variant="soft" @click="isSlideOpen = false" />
+        <UTabs class="w-full pt-2" :items="tabsItems" :default-index="tabsItems.findIndex((el) => el.raw === currentFilter)" @change="currentFilter = tabsItems[$event].raw" />
       </div>
 
       <div class="mt-5 overflow-auto hide-scrollbar h-80%">
@@ -60,10 +61,10 @@ const modsByTab = computed(() => mods.value?.filter(mod => mod.project_type === 
 
       <div class="absolute p-2 w-full left-0 bottom-0">
         <UCard>
-          <div class="flex justify-between items-center">
+          <div class="md:flex justify-between items-center">
             <div class="flex items-center gap-4">
               <UTooltip text="Select modpack configuration" @click="isOptionsModalOpened = true">
-                <UButton icon="material-symbols:settings-rounded" color="gray" size="lg" />
+                <UButton :icon="ICONS.GEAR" color="gray" size="lg" />
               </UTooltip>
 
               <UButton class="center" variant="ghost">
@@ -80,7 +81,7 @@ const modsByTab = computed(() => mods.value?.filter(mod => mod.project_type === 
 
             <div class="flex gap-4">
               <DownloadModpack :disabled="pending" />
-              <UButton icon="ph:share-fat" variant="ghost" @click="HCopyToClipboard()">
+              <UButton :icon="ICONS.SHARE" variant="ghost" @click="HCopyToClipboard()">
                 Share
               </UButton>
             </div>
@@ -88,9 +89,8 @@ const modsByTab = computed(() => mods.value?.filter(mod => mod.project_type === 
         </UCard>
       </div>
     </div>
+    <ModPackConfigurator v-model="isOptionsModalOpened" @close-modal="isOptionsModalOpened = false" />
   </USlideover>
-
-  <ModPackConfigurator v-model="isOptionsModalOpened" @close-modal="isOptionsModalOpened = false" />
 
   <UTooltip :popper="{ placement: 'right' }" text="Open modpack" :shortcuts="['Alt', 'A']" class="text-xl fixed left-5 top-5">
     <UButton size="xl" icon="streamline:backpack-solid" color="sky" @click="isSlideOpen = true" />

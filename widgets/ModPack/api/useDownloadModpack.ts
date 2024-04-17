@@ -28,7 +28,7 @@ export default () => {
     const modsData = useNuxtData<IModInfo[]>('modlist')
 
     if (!modsData.data.value?.length) {
-      useToast().add({ title: 'No mods installed' })
+      useToast().add({ title: 'No mods installed', color: 'red' })
       return
     }
 
