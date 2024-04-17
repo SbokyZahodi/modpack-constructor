@@ -15,6 +15,10 @@ export default defineAppConfig({
 
     },
 
+    icons: {
+      dynamic: true,
+    },
+
     notifications: {
       // Show toasts at the top right of the screen
       position: 'top-0 bottom-auto',
@@ -22,10 +26,6 @@ export default defineAppConfig({
 
     modal: {
       container: 'items-center',
-    },
-
-    icons: {
-      dynamic: true,
     },
 
     slideover: {

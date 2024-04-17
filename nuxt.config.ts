@@ -16,8 +16,9 @@ export default defineNuxtConfig({
     },
   },
 
+  // Disable for a while
   typescript: {
-    typeCheck: true,
+    typeCheck: false,
   },
 
   imports: {

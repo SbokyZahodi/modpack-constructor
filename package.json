@@ -21,20 +21,20 @@
     "jszip": "^3.10.1"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^2.13.3",
+    "@antfu/eslint-config": "^2.14.0",
     "@nuxt/devtools": "1.1.5",
     "@nuxt/image": "^1.5.0",
-    "@nuxt/ui": "^2.15.0",
-    "@nuxtjs/seo": "^2.0.0-rc.10",
+    "@nuxt/ui": "^2.15.2",
+    "@nuxtjs/seo": "2.0.0-rc.10",
     "@types/file-saver": "^2.0.7",
-    "@unocss/eslint-plugin": "^0.58.9",
-    "@unocss/nuxt": "^0.59.2",
-    "@unocss/transformer-directives": "^0.59.2",
-    "@unocss/transformer-variant-group": "^0.59.2",
+    "@unocss/eslint-plugin": "^0.59.3",
+    "@unocss/nuxt": "^0.59.3",
+    "@unocss/transformer-directives": "^0.59.3",
+    "@unocss/transformer-variant-group": "^0.59.3",
     "eslint": "^9.0.0",
     "nuxt": "^3.11.2",
     "typescript": "^5.4.5",
-    "vue-tsc": "^1"
+    "vue-tsc": "^2.0.13"
   },
   "trustedDependencies": [
     "@fortawesome/fontawesome-common-types",
