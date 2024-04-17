@@ -1,7 +1,7 @@
 ## The Minecraft modpack constructor in browser
 ### Powered by [Modrinth](https://modrinth.com/) 💡
 
-![Preview](https://raw.githubusercontent.com/SbokyZahodi/modpack-constructor/main/public/preview-1.png)
+![Preview](https://modpack-constructor.vercel.app/preview-1.png)
 
 ### Goals
 
