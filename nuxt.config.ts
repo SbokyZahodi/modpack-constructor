@@ -36,10 +36,9 @@ export default defineNuxtConfig({
 
   site: {
     url: 'https://modpack-constructor.vercel.app',
-    name: 'MC',
+    name: 'Build-Axe | The Minecraft modpack constructor',
     description: 'The Minecraft modpack constructor in browser',
     defaultLocale: 'en',
-
   },
 
   components: {

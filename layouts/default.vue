@@ -7,7 +7,7 @@ import { Header } from '~/widgets/Header'
 <template>
   <main class="">
     <Head>
-      <Link rel="icon" type="image/png" href="/heart.png" />
+      <Link rel="icon" type="image/png" href="/logo.png" />
     </Head>
 
     <ModPack />
