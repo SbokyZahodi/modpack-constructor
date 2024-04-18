@@ -30,7 +30,7 @@ export default () => {
   function addMod(slug: string) {
     if (!modpack.value.modlist.includes(slug)) {
       modpack.value.modlist.push(slug)
-      useToast().add({ title: 'Mod added', icon: 'ic:baseline-add', color: 'green' })
+      useToast().add({ title: 'Mod added', icon: ICONS.CUBE, color: 'green' })
     }
   }
 
@@ -39,11 +39,22 @@ export default () => {
     useToast().add({ title: 'Mod removed', icon: 'ic:baseline-delete' })
   }
 
+  function removeAllMods() {
+    if (!modpack.value.modlist.length) {
+      useToast().add({ title: 'No mods installed', icon: ICONS.CUBE })
+      return
+    }
+
+    modpack.value.modlist = []
+    useToast().add({ title: 'All mods removed', icon: 'ic:baseline-delete', color: 'green' })
+  }
+
   return {
     modpack,
     setVersion,
     setLoader,
     addMod,
     removeMod,
+    removeAllMods,
   }
 }

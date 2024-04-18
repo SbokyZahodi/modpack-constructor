@@ -18,7 +18,7 @@ defineShortcuts({
   },
 })
 
-const { modpack, removeMod } = useModpack()
+const { modpack, removeMod, removeAllMods } = useModpack()
 
 watch(modpack.value, () => {
   HSetQuery('modpack', JSON.stringify(modpack.value))
@@ -40,6 +40,14 @@ const modsByTab = computed(() => mods.value?.filter(mod => mod.project_type === 
         <UCloseButton @click="isSlideOpen = false" />
       </div>
 
+      <div class="p-1">
+        <UTooltip text="Remove all mods">
+          <UButton :icon="ICONS.TRASH" color="red" :loading="pending" @click="removeAllMods">
+            Clear All
+          </UButton>
+        </UTooltip>
+      </div>
+
       <div class="mt-5 overflow-auto hide-scrollbar h-80%">
         <div v-if="modsByTab?.length">
           <TransitionExpand group>
@@ -47,7 +55,7 @@ const modsByTab = computed(() => mods.value?.filter(mod => mod.project_type === 
               <ModEntity class="" :mod="mod" />
 
               <UTooltip text="Remove mod" class="absolute right-4 top-4">
-                <UButton color="red" variant="outline" :loading="pending" icon="octicon:trash-16" class="" @click="removeMod(mod.slug)" />
+                <UButton color="red" variant="outline" :loading="pending" :icon="ICONS.TRASH" class="" @click="removeMod(mod.slug)" />
               </UTooltip>
             </div>
           </TransitionExpand>
