@@ -1,10 +1,9 @@
 import JSZip from 'jszip'
 import filesaver from 'file-saver'
 import { useModpack } from '../model'
+import HCompatibleMod from './HCompatibleMod'
 
-type Stages = 'Downloading mods...' | 'Download dependencies...'
-
-interface ModInfo {
+interface ModFile {
   project_type: string
   slug: string
   blob: Blob
@@ -13,20 +12,19 @@ interface ModInfo {
 export default () => {
   const { modpack } = useModpack()
 
-  const modsCount = computed(() => modpack.value.modlist.length)
+  const modsData = useNuxtData<IModInfo[]>('modlist')
+  const modsCount = computed(() => modsData.data.value?.length)
 
   const state = useState('modpack-download', () => {
     return {
       isFetching: false,
-      progress: 0,
       modsCount: modsCount.value,
-      stage: 'Downloading mods...' as Stages,
+      stage: 'Downloading mods...',
     }
   })
 
+  /** Downloads mods and dependencies then creates zip that will be downloaded */
   async function downloadModpack() {
-    const modsData = useNuxtData<IModInfo[]>('modlist')
-
     if (!modsData.data.value?.length) {
       useToast().add({ title: 'No mods installed', color: 'red' })
       return
@@ -42,8 +40,8 @@ export default () => {
 
     const mods = await downloadMods(modsData.data.value)
 
-    // Sort by project type | shader > resourcepack > mod
-    mods.forEach((mod: ModInfo) => {
+    // Sort to zip folders by project type | shader resourcepack mod
+    mods.forEach((mod: ModFile) => {
       const { blob, slug } = mod
 
       if (mod.project_type === 'shader')
@@ -62,92 +60,62 @@ export default () => {
     })
 
     state.value.isFetching = false
-    state.value.stage = 'Downloading mods...'
-    state.value.progress = 0
   }
 
-  async function downloadMods(modlist: IModInfo[]): Promise<ModInfo[]> {
-    const mods = [] as ModInfo[]
+  /** Download mods and their dependencies */
+  async function downloadMods(modlist: IModInfo[]): Promise<ModFile[]> {
+    const mods = [] as (ModFile | null)[]
     const dependencies = [] as string[]
 
-    for (const mod of modlist) {
+    /** Download files by mod info */
+    const downloadFiles = (mods: IModInfo[]) => mods.map(async (mod): Promise<ModFile | null> => {
+      state.value.stage = `Downloading ${mod.slug}...`
+
       const version = await useAPI<IVersion[]>(() => `project/${mod.slug}/version`, {
-        server: false,
         params: {
           game_versions: JSON.stringify([modpack.value.version]),
           featured: true,
         },
-        onResponse() {
-          state.value.progress++
-        },
+
       })
 
-      // Check if version compatible with current loader
       if (!version.data.value)
-        continue
+        return null
 
-      const compatibleVersion = () => {
-        return version.data.value?.find(v => v.loaders.includes(modpack.value.loader.toLowerCase()))
-          ?? version.data.value?.at(0)
-      }
+      const compatibleVersion = HCompatibleMod(version.data.value, modpack.value.loader)
 
-      const ver = compatibleVersion()
+      if (!compatibleVersion)
+        return null
 
-      if (!ver)
-        continue
+      // download file
+      const blob = await (await fetch(compatibleVersion.files[0].url)).blob()
 
-      // Download File
-      const blob = await fetch(ver.files[0].url).then(r => r.blob())
+      // add dependency if exist
+      if (compatibleVersion.dependencies)
+        dependencies.push(...compatibleVersion.dependencies.map(dep => dep.project_id))
 
-      mods.push({ project_type: mod.project_type, slug: mod.slug, blob })
+      return { project_type: mod.project_type, slug: mod.slug, blob }
+    })
 
-      // Add dependencies to list
-      ver.dependencies.forEach(dep => dependencies.push(dep.project_id))
-    }
+    const modsData = await Promise.all(downloadFiles(modlist))
 
-    if (modpack.value.dependenciesAutoinstall) {
-      const dependencyMods = await downloadDependencies(dependencies)
-
-      return mods.concat(dependencyMods)
-    }
-    else {
-      return mods
-    }
-  }
-
-  async function downloadDependencies(versions: string[]): Promise<ModInfo[]> {
-    const mods = [] as ModInfo[]
-
-    for (const ver of versions) {
-      state.value.stage = 'Download dependencies...'
-
-      const version = await useAPI<IVersion[]>(() => `project/${ver}/version`, {
-        server: false,
+    if (dependencies.length) {
+      const dependenciesProjects = await useAPI<IModInfo[]>(() => 'projects', {
         params: {
-          game_versions: JSON.stringify([modpack.value.version]),
-          featured: true,
+          ids: JSON.stringify(dependencies),
         },
       })
 
-      if (!version.data.value?.length)
-        continue
+      if (dependenciesProjects.data.value) {
+        const dependencyArray = await Promise.all(downloadFiles(dependenciesProjects.data.value))
 
-      const blob = await fetch(version.data.value[0].files[0].url).then(r => r.blob())
-
-      // Fetch project info to get project_type
-      const project = await useAPI<IModInfo>(() => `project/${version.data.value?.at(0)?.project_id}`, {
-        server: false,
-      })
-
-      const firstItem = project.data.value
-
-      if (!firstItem)
-        continue
-
-      mods.push({ project_type: firstItem.project_type, slug: firstItem.slug, blob })
+        mods.push(...dependencyArray)
+      }
     }
 
-    return mods
+    mods.push(...modsData)
+
+    return mods.filter(Boolean) as ModFile[]
   }
 
   return {
