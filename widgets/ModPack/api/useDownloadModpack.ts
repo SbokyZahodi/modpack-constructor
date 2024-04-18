@@ -99,7 +99,7 @@ export default () => {
 
     const modsData = await Promise.all(downloadFiles(modlist))
 
-    if (dependencies.length) {
+    if (dependencies.length && modpack.value.dependenciesAutoinstall) {
       const dependenciesProjects = await useAPI<IModInfo[]>(() => 'projects', {
         params: {
           ids: JSON.stringify(dependencies),
