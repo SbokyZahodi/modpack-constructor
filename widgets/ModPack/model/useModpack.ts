@@ -9,7 +9,7 @@ export default () => {
   const defaultValue = {
     modlist: [],
     loader: 'Forge',
-    version: '1.20.1',
+    version: '1.20.4',
     dependenciesAutoinstall: true,
   }
 
