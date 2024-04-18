@@ -3,10 +3,8 @@ import ModInfoSkeleton from './ModInfoSkeleton.vue'
 import { useModpack } from '~/widgets/ModPack'
 import type { IModInfo } from '~/shared/api/IModInfo'
 
-const { addMod } = useModpack()
-
 const mod = computed(() => HGetQuery('mod', null))
-const { modpack } = useModpack()
+const { modpack, addMod } = useModpack()
 
 const isModExist = computed({
   get() {
@@ -18,7 +16,7 @@ const isModExist = computed({
   },
 })
 
-const { data, pending, execute: fetchMod } = await useAPI<IModInfo>(() => `project/${mod.value}`, {
+const { data, pending, execute: fetchModInfo } = await useAPI<IModInfo>(() => `project/${mod.value}`, {
   onRequest({ request, options }) {
     if (request.toString().includes('null'))
       options.signal = new AbortSignal()
@@ -30,17 +28,17 @@ const latestVersion = computed(() => data.value?.game_versions.at(-1))
 const isModCompatible = computed(() => {
   const success = { message: 'Add to modpack', compatible: true }
 
-  if (data.value?.project_type !== 'mod')
-    return success
-
-  if (!data.value?.loaders.includes(modpack.value.loader.toLowerCase()))
-    return { message: 'Mod is not compatible with your loader', compatible: false }
+  if (modpack.value.modlist.includes(data.value?.slug as string))
+    return { message: 'Mod is already in modpack', compatible: false }
 
   if (!data.value?.game_versions.includes(modpack.value.version))
     return { message: 'Mod is not compatible with your version', compatible: false }
 
-  if (modpack.value.modlist.includes(data.value?.slug))
-    return { message: 'Mod is already in modpack', compatible: false }
+  if (data.value?.project_type === 'shader' || data.value?.project_type === 'resourcepack')
+    return success
+
+  if (!data.value?.loaders.includes(modpack.value.loader.toLowerCase()))
+    return { message: 'Mod is not compatible with your loader', compatible: false }
 
   return success
 })
@@ -49,12 +47,14 @@ function addMods() {
   if (data.value)
     addMod(data.value.slug)
 
-  HSetQuery('mod', null)
+  setTimeout(() => {
+    HSetQuery('mod', null)
+  }, 100)
 }
 
 onMounted(() => {
   if (mod.value)
-    fetchMod()
+    fetchModInfo()
 })
 </script>
 

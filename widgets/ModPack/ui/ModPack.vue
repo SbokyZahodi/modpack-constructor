@@ -27,7 +27,6 @@ watch(modpack.value, () => {
 const { data: mods, pending } = await useAPI<IMod[]>(() => `projects?ids=${JSON.stringify(modpack.value.modlist)}`, {
   immediate: true,
   key: 'modlist',
-  server: false,
 })
 
 const modsByTab = computed(() => mods.value?.filter(mod => mod.project_type === currentFilter.value))

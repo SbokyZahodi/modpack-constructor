@@ -9,7 +9,7 @@ export function useAPI<T>(url: string | (() => string), options: UseFetchOptions
     headers: {
       'User-Agent': 'https://github.com/SbokyZahodi/modpack-constructor',
     },
-
+    server: false,
   }
 
   const params = defu(options, defaults)

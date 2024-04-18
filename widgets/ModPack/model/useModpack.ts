@@ -28,8 +28,10 @@ export default () => {
   }
 
   function addMod(slug: string) {
-    modpack.value.modlist.push(slug)
-    useToast().add({ title: 'Mod added', icon: 'ic:baseline-add', color: 'green' })
+    if (!modpack.value.modlist.includes(slug)) {
+      modpack.value.modlist.push(slug)
+      useToast().add({ title: 'Mod added', icon: 'ic:baseline-add', color: 'green' })
+    }
   }
 
   function removeMod(modSlug: string) {

@@ -57,10 +57,6 @@ watch(() => facets.value, () => {
   page.value = 1
 })
 
-useHead({
-  titleTemplate: '%siteName | The Minecraft modpack constructor',
-})
-
 const { data, pending } = await useAPI<{ limit: number, offset: number, total_hits: number, hits: IMod[] }>('search', {
   query: {
     query: modName,
