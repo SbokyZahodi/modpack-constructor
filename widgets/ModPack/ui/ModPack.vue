@@ -42,7 +42,7 @@ const modsByTab = computed(() => mods.value?.filter(mod => mod.project_type === 
 
       <div class="p-1">
         <UTooltip text="Remove all mods">
-          <UButton :icon="ICONS.TRASH" color="red" :loading="pending" @click="removeAllMods">
+          <UButton :icon="ICONS.TRASH" color="red" variant="outline" :loading="pending" @click="removeAllMods">
             Clear All
           </UButton>
         </UTooltip>
