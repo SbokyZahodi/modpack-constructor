@@ -10,12 +10,6 @@ export default defineNuxtConfig({
   ],
   css: ['@/app/global.css'],
 
-  runtimeConfig: {
-    public: {
-      api: 'https://api.modrinth.com/v2',
-    },
-  },
-
   // Disable for a while
   typescript: {
     typeCheck: false,
@@ -31,7 +25,7 @@ export default defineNuxtConfig({
   },
 
   dir: {
-    pages: 'routes',
+    pages: 'app/routes',
   },
 
   site: {

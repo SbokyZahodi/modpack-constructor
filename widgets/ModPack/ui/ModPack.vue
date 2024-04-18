@@ -48,7 +48,7 @@ const modsByTab = computed(() => mods.value?.filter(mod => mod.project_type === 
         </UTooltip>
       </div>
 
-      <div class="mt-5 overflow-auto hide-scrollbar h-80%">
+      <div class="mt-5 overflow-auto hide-scrollbar h-75%">
         <div v-if="modsByTab?.length">
           <TransitionExpand group>
             <div v-for="mod in modsByTab" :key="mod.project_id" class="relative my-2" :mod="mod">

@@ -71,7 +71,7 @@ export default () => {
     const downloadFiles = (mods: IModInfo[]) => mods.map(async (mod): Promise<ModFile | null> => {
       state.value.stage = `Downloading ${mod.slug}...`
 
-      const version = await useAPI<IVersion[]>(() => `project/${mod.slug}/version`, {
+      const version = await $api<IVersion[]>(`project/${mod.slug}/version`, {
         params: {
           game_versions: JSON.stringify([modpack.value.version]),
           featured: true,
@@ -79,10 +79,10 @@ export default () => {
 
       })
 
-      if (!version.data.value)
+      if (!version)
         return null
 
-      const compatibleVersion = HCompatibleMod(version.data.value, modpack.value.loader)
+      const compatibleVersion = HCompatibleMod(version, modpack.value.loader, modpack.value.version, mod.project_type)
 
       if (!compatibleVersion)
         return null
@@ -90,9 +90,9 @@ export default () => {
       // download file
       const blob = await (await fetch(compatibleVersion.files[0].url)).blob()
 
-      // add dependency if exist
+      // add dependency if exist and required
       if (compatibleVersion.dependencies)
-        dependencies.push(...compatibleVersion.dependencies.map(dep => dep.project_id))
+        dependencies.push(...compatibleVersion.dependencies.filter(dep => dep.dependency_type === 'required').map(dep => dep.project_id))
 
       return { project_type: mod.project_type, slug: mod.slug, blob }
     })
@@ -100,14 +100,14 @@ export default () => {
     const modsData = await Promise.all(downloadFiles(modlist))
 
     if (dependencies.length && modpack.value.dependenciesAutoinstall) {
-      const dependenciesProjects = await useAPI<IModInfo[]>(() => 'projects', {
+      const dependenciesProjects = await $api<IModInfo[]>('projects', {
         params: {
           ids: JSON.stringify(dependencies),
         },
       })
 
-      if (dependenciesProjects.data.value) {
-        const dependencyArray = await Promise.all(downloadFiles(dependenciesProjects.data.value))
+      if (dependenciesProjects) {
+        const dependencyArray = await Promise.all(downloadFiles(dependenciesProjects))
 
         mods.push(...dependencyArray)
       }
