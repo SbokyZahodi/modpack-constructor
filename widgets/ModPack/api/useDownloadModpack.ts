@@ -91,7 +91,7 @@ export default () => {
       const blob = await (await fetch(compatibleVersion.files[0].url)).blob()
 
       // add dependency if exist and required
-      if (compatibleVersion.dependencies)
+      if (compatibleVersion.dependencies.length)
         dependencies.push(...compatibleVersion.dependencies.filter(dep => dep.dependency_type === 'required').map(dep => dep.project_id))
 
       return { project_type: mod.project_type, slug: mod.slug, blob }
