@@ -40,12 +40,16 @@ const modsByTab = computed(() => mods.value?.filter(mod => mod.project_type === 
         <UCloseButton @click="isSlideOpen = false" />
       </div>
 
-      <div class="p-1">
+      <div class="p-1 flex justify-between">
         <UTooltip text="Remove all mods">
           <UButton :icon="ICONS.TRASH" color="red" variant="outline" :loading="pending" @click="removeAllMods">
             Clear All
           </UButton>
         </UTooltip>
+
+        <UButton variant="soft">
+          Mods installed: {{ modpack.modlist.length }}
+        </UButton>
       </div>
 
       <div class="mt-5 overflow-auto hide-scrollbar h-75%">
