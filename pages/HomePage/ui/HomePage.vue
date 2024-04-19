@@ -6,15 +6,9 @@ import { ModList } from '~/widgets/ModList'
 import { useModpack } from '~/widgets/ModPack'
 
 const modName = ref('')
-defineOgImageComponent('NuxtSeo', {
-  theme: '#00ffff',
-  colorMode: 'dark',
-  title: 'Modpack Constructor',
-  siteName: 'MC',
-  siteLogo: '/logo.png',
-  description: 'The Minecraft Modpack Constructor in Browser',
+defineOgImage({
+  url: '/og-image.png',
 })
-
 const { modpack } = useModpack()
 
 const loader = computed(() => {
