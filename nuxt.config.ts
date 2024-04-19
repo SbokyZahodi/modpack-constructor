@@ -17,10 +17,8 @@ export default defineNuxtConfig({
 
   imports: {
     dirs: [
-      'shared/api',
-      'shared/ui',
-      'shared/config',
-      // You can specify here any folder from which you want to auto-import
+      'shared/**',
+      // Auto-import all files from shared directory.
     ],
   },
 
@@ -30,19 +28,16 @@ export default defineNuxtConfig({
 
   site: {
     url: 'https://modpack-constructor.vercel.app',
-    name: 'Build-Axe | The Minecraft modpack constructor',
+    name: 'MC | The Minecraft modpack constructor',
     description: 'The Minecraft modpack constructor in browser',
     defaultLocale: 'en',
   },
 
-  components: {
-    dirs: [
-      {
-        path: '~/shared/components',
-        pathPrefix: false,
-      },
-
-    ],
-  },
+  components: [
+    {
+      path: '~/shared',
+      pathPrefix: false,
+    },
+  ],
 
 })
