@@ -29,7 +29,7 @@ export default defineNuxtConfig({
   site: {
     url: 'https://modpack-constructor.vercel.app',
     name: 'MC | The Minecraft modpack constructor',
-    description: 'The Minecraft modpack constructor in browser',
+    description: 'The Minecraft modpack constructor in browser powered by Modrinth',
     defaultLocale: 'en',
   },
 
