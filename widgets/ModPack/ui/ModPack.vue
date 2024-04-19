@@ -61,9 +61,7 @@ const modsByTab = computed(() => mods.value?.filter(mod => mod.project_type === 
           </TransitionExpand>
         </div>
 
-        <UNotFound v-else class="h-full">
-          Seems... <br> here is empty <br> Maybe add mods?
-        </UNotFound>
+        <UNotFound v-else class="h-full" />
       </div>
 
       <div class="absolute p-2 w-full left-0 bottom-0">
