@@ -26,4 +26,4 @@
 ## Bug Reporting
 ### 🐛 Found a Bug?
 
-To report a bug, please open an [Issue](https://github.com/SbokyZahodi/modpack-constructor/issues)
+To report a bug, please open an [Issue](https://github.com/SbokyZahodi/modpack-constructor/issues) and provide the modpack URL
