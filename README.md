@@ -6,7 +6,7 @@
 - 🌐 **Web-Based**: Nothing to install
 
 - 🔍 **Search & Filter**: Easily find the mods you're looking for.
-- 🔗 **Shareable**: Share mods with a URL.
+- 🔗 **Shareable**: Share modpack with a URL.
 - 🍉 **Fresh**: Automatically installs the latest versions of mods.
 - 🛠️ **Dependencies**: Dependencies are installed automatically.
 
