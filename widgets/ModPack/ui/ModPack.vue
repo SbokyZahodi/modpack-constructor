@@ -2,7 +2,7 @@
 import { useModpack } from '..'
 import ModPackConfigurator from './ModPackConfigurator.vue'
 import DownloadModpack from './DownloadModpack.vue'
-import { ModEntity } from '~/entities/ModEntity'
+import { ModCard } from '~/entities/ModEntity'
 
 const { modpack, removeMod, removeAllMods } = useModpack()
 
@@ -57,11 +57,10 @@ const modsBySearch = computed(() => modsByTab.value?.filter(mod => mod.title.toL
 
       <div class="mt-5 overflow-auto hide-scrollbar h-75%">
         <div class="p1">
+          <UInput v-model="searchByName" placeholder="Filter mods by name" />
           <TransitionExpand group tag="ul">
-            <UInput v-model="searchByName" placeholder="Filter mods by name" />
-
-            <div v-for="mod in modsBySearch" :key="mod.project_id" class="relative my-2" :mod="mod">
-              <ModEntity :mod="mod" />
+            <ul v-for="mod in modsBySearch" :key="mod.project_id" class="relative my-2" :mod="mod">
+              <ModCard :mod="mod" />
 
               <div class="absolute right-4 flex gap-2 bottom-4 md:bottom-auto md:top-4">
                 <UTooltip text="Select mod version">
@@ -73,11 +72,13 @@ const modsBySearch = computed(() => modsByTab.value?.filter(mod => mod.title.toL
                   <UButton color="red" variant="outline" :loading="pending" :icon="ICONS.TRASH" @click="removeMod(mod.slug)" />
                 </UTooltip>
               </div>
-            </div>
+            </ul>
           </TransitionExpand>
         </div>
 
-        <UNotFound v-if="!modsBySearch?.length" class="h-full" />
+        <TransitionExpand>
+          <UNotFound v-if="!modsBySearch?.length" class="md:h-[90%] h-1/2 m-1" />
+        </TransitionExpand>
       </div>
 
       <div class="absolute p-2 w-full left-0 bottom-0">
@@ -109,7 +110,15 @@ const modsBySearch = computed(() => modsByTab.value?.filter(mod => mod.title.toL
     <ModPackConfigurator v-model="isOptionsModalOpened" @close-modal="isOptionsModalOpened = false" />
   </USlideover>
 
-  <UTooltip :popper="{ placement: 'right' }" text="Open modpack" :shortcuts="['Alt', 'A']" class="text-xl fixed top-4 left-4">
-    <UButton size="xl" icon="streamline:backpack-solid" color="gray" @click="isSlideOpen = true" />
+  <UTooltip :popper="{ placement: 'right' }" text="Open modpack" :shortcuts="['Alt', 'A']" class="text-xl absolute top-4 left-4">
+    <UCard :ui="{ body: { padding: 'p-1' } }" class="w-13 transition-all duration-1000 overflow-hidden rounded-full" :class="{ 'w-70': mods?.length }" @click="isSlideOpen = true">
+      <div class="flex gap-4">
+        <UButton size="xl" class="rounded-full" color="sky" icon="streamline:backpack-solid" />
+
+        <UAvatarGroup :max="5" size="md">
+          <UAvatar v-for="mod in mods" :key="mod.project_id" :src="mod.icon_url" class="bg-zinc" />
+        </UAvatarGroup>
+      </div>
+    </UCard>
   </UTooltip>
 </template>
