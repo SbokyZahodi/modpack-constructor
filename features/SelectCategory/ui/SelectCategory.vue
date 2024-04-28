@@ -1,7 +1,7 @@
 <script lang='ts' setup>
 import type { ICategory } from '~/shared/api/ICategory'
 
-const { data } = await useAPI<ICategory[]>('tag/category')
+const { data, pending } = await useAPI<ICategory[]>('tag/category')
 
 const modCategories = computed(() => data.value?.filter(el => el.project_type === 'mod'))
 
@@ -17,17 +17,41 @@ function addCategory(category: string) {
 }
 
 watch(() => selectedCategories.value, () => {
-  const cats = selectedCategories.value.length ? selectedCategories.value.join(',') : null
+  const categories = selectedCategories.value.length ? selectedCategories.value.join(',') : []
 
-  HSetQuery('categories', cats)
+  HSetQuery('categories', categories)
 }, { deep: true })
+
+const items = computed(() => {
+  return modCategories.value?.map(el => ({ name: el.name, icon: el.icon }))
+})
 </script>
 
 <template>
-  <div class="flex gap-4 overflow-auto hide-scrollbar">
-    <UButton v-for="category in modCategories" :key="category.name" class="gap-2 p-2 center" :variant="selectedCategories.includes(category.name) ? 'solid' : 'outline'" @click="addCategory(category.name)">
-      <div alt="" class="size-5" v-html="category.icon" />
-      {{ category.name }}
+  <UCarousel
+    v-if="items?.length && !pending"
+    v-slot="{ item }" :items="items"
+    arrows
+    :ui="{
+      arrows: {
+        wrapper: 'absolute -top-1 left-0 w-full p-2',
+      }
+    }"
+    class="h-10 center px-15"
+    :prev-button="{
+      color: 'gray',
+      icon: 'mingcute:left-fill',
+      class: '',
+    }"
+    :next-button="{
+      color: 'gray',
+      icon: 'mingcute:right-fill',
+      class: '',
+    }"
+  >
+    <UButton class="gap-2 p-2 center m-2" :variant="selectedCategories.includes(item.name) ? 'solid' : 'outline'" @click="addCategory(item.name)">
+      <div alt="" class="size-5" v-html="item.icon" />
+      {{ item.name }}
     </UButton>
-  </div>
+  </UCarousel>
 </template>
