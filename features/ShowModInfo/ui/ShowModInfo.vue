@@ -61,7 +61,12 @@ onMounted(() => {
 <template>
   <USlideover v-model="isModExist" :ui="{ base: 'px-5' }">
     <div v-if="!pending && data" class="overflow-auto hide-scrollbar h-90% px-2">
-      <UCloseButton class="absolute right-4 mt4" @click="isModExist = false" />
+      <UCloseButton class="absolute left-4 mt4" @click="isModExist = false" />
+      <UTooltip text="Open in Modrinth" class="absolute right-4 mt4">
+        <NuxtLink :to="`https://modrinth.com/mod/${data.slug}`" target="_blank">
+          <UButton :icon="ICONS.SHARE" size="xl" variant="soft" />
+        </NuxtLink>
+      </UTooltip>
 
       <div class="center">
         <img :src="data?.icon_url" class="rounded-xl size-40 m-5">
@@ -74,22 +79,14 @@ onMounted(() => {
       <div class="flex flex-col items-end justify-end">
         <UDownloads v-if="data?.downloads" class="center justify-end mt-5 float-right" :downloads="data.downloads" />
 
-        <div class="">
+        <div class="mt2">
           latest version {{ latestVersion }}
         </div>
 
-        <div>
-          <UPopover mode="hover" :popper="{ placement: 'bottom-end' }">
-            <UButton variant="outline" class="center mt-2 w-40">
-              loaders
-            </UButton>
-
-            <template #panel>
-              <div v-for="loader in data?.loaders" :key="loader" class="w-40 center m-2 capitalize">
-                {{ loader }}
-              </div>
-            </template>
-          </UPopover>
+        <div class="mt-2">
+          <UBadge v-for="loader in data?.loaders" :key="loader" variant="soft" size="lg" class="m1 font-semibold rounded-full">
+            {{ loader }}
+          </UBadge>
         </div>
       </div>
 
@@ -117,7 +114,7 @@ onMounted(() => {
         <NuxtImg :src="item" placeholder class="h-70 w-100" draggable="false" />
       </UCarousel>
 
-      <div class="p-2 absolute bottom-0 left-0 w-full">
+      <div class="absolute bottom-0 left-0 w-full p-2">
         <UButton class="w-full center font-semibold p-4" :disabled="!isModCompatible.compatible" variant="solid" @click="addMods">
           {{ isModCompatible.message }}
         </UButton>
