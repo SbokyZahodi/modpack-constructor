@@ -10,7 +10,6 @@ export default () => {
     modlist: [],
     loader: 'Forge',
     version: '1.20.4',
-    dependenciesAutoinstall: true,
   }
 
   const modpack = useState<IModpack>('modpack', () => {
