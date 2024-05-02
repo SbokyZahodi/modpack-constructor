@@ -1,62 +1,23 @@
 <script lang='ts' setup>
+import { useFilters } from '../model'
 import { SelectCategory } from '~/features/SelectCategory'
 import { SelectLoader } from '~/features/SelectLoader'
 import { SelectProjectType } from '~/features/SelectProjectType'
 import { ModList } from '~/widgets/ModList'
-import { useModpack } from '~/widgets/ModPack'
 
 const modName = ref('')
-defineOgImage({
-  url: '/og-image.png',
-})
-const { modpack } = useModpack()
 
-const loader = computed(() => {
-  return useRoute().query.loader?.toString().toLocaleLowerCase()
-})
+const { modlistPage, searchOptions } = useFilters()
 
-const categories = computed(() => {
-  return useRoute().query.categories?.toString().toLocaleLowerCase()
-})
+const searchPage = ref(modlistPage.value)
+const offset = computed(() => (modlistPage.value - 1) * 20)
 
-const project_type = computed(() => {
-  return HGetQuery('project_type', 'mod')
-})
-
-const searchOptions = computed(() => {
-  const list = []
-
-  list.push([`project_type:${project_type.value}`])
-  list.push([`versions:${modpack.value.version}`])
-
-  if (categories.value)
-    categories.value.split(',').forEach(category => list.push([`categories:${category}`]))
-
-  if (project_type.value === 'datapack')
-    list.push([`project_type:datapack`])
-
-  if (loader.value && project_type.value === 'mod')
-    list.push([`categories:${loader.value}`])
-
-  return JSON.stringify(list)
-})
-
-const routePage = computed(() => {
-  if (useRoute().query.page)
-    return Number(useRoute().query.page)
-
-  return 1
-})
-
-const page = ref(routePage.value)
-const offset = computed(() => (page.value - 1) * 20)
-
-watch(() => page.value, () => {
-  HSetQuery('page', String(page.value))
+watch(() => searchPage.value, () => {
+  HSetQuery('page', String(searchPage.value))
 })
 
 watch(() => searchOptions.value, () => {
-  page.value = 1
+  searchPage.value = 1
 })
 
 const { data, pending } = await useAPI<{ limit: number, offset: number, total_hits: number, hits: IMod[] }>('search', {
@@ -67,19 +28,20 @@ const { data, pending } = await useAPI<{ limit: number, offset: number, total_hi
     offset,
     project_type: HGetQuery('project_type', 'mod'),
   },
-
 })
 </script>
 
 <template>
   <UContainer>
-    <SelectProjectType />
-    <UInput v-model="modName" class="" size="xl" placeholder="Search mod" trailing-icon="line-md:search" />
+    <div class="md:flex justify-between items-center gap-4">
+      <UInput v-model="modName" class="basis-1/2" size="lg" placeholder="Search mod" trailing-icon="line-md:search" />
+      <SelectProjectType class="relative bottom-1 basis-1/2" />
+    </div>
 
-    <SelectCategory v-if="project_type === 'mod'" class="my-4" />
-    <div class="my-4 items-center justify-between md:flex">
-      <SelectLoader v-if="HGetQuery('project_type', 'mod') === 'mod'" />
-      <UPagination v-if="data" v-model="page" :total="data.total_hits" :page-count="20" />
+    <SelectCategory class="my-1" />
+    <div class="items-center justify-between md:flex my-4">
+      <SelectLoader />
+      <UPagination v-if="data" v-model="searchPage" :total="data.total_hits" class="relative bottom-1 mt-5 md:mt-0" :page-count="20" />
     </div>
 
     <div class="my-4">
