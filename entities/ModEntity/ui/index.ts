@@ -1,3 +1,3 @@
-import ModEntity from './ModEntity.vue'
+import ModCard from './ModCard.vue'
 
-export { ModEntity }
+export { ModCard }

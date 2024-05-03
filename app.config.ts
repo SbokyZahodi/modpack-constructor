@@ -21,7 +21,7 @@ export default defineAppConfig({
 
     notifications: {
       // Show toasts at the top right of the screen
-      position: 'top-0 bottom-auto',
+      position: 'bottom-0 ',
     },
 
     modal: {
@@ -29,7 +29,7 @@ export default defineAppConfig({
     },
 
     slideover: {
-      base: 'relative flex-1 flex flex-col w-full !transform focus:outline-none',
+      base: 'relative flex-1 flex flex-col w-full duration-300 !transform focus:outline-none',
     },
 
     pagination: {

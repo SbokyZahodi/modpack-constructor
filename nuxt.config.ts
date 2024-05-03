@@ -17,7 +17,7 @@ export default defineNuxtConfig({
 
   imports: {
     dirs: [
-      'shared/**',
+      'shared/*',
       // Auto-import all files from shared directory.
     ],
   },

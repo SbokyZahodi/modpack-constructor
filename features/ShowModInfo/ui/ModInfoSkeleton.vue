@@ -6,7 +6,7 @@
 
     <USkeleton class="h-10 mt-5 w-1/2 mx-auto" />
 
-    <div class="mt-5 flex justify-end w-full gap-2">
+    <div class="mt-5 flex w-full gap-2 justify-end">
       <div class="w-1/2 grid gap-4">
         <USkeleton class="w-full h-8" />
         <USkeleton class="w-full h-8" />
@@ -15,9 +15,9 @@
 
     <USkeleton class="w-full mt-5 h-30" />
 
-    <USkeleton class="h-70 mt-4" />
+    <USkeleton class="mt-4 h-70" />
 
-    <div class="w-full absolute bottom-0 left-0 p-4 h-20">
+    <div class="w-full p-4 absolute bottom-0 left-0 h-20">
       <USkeleton class="w-full h-15" />
     </div>
   </div>
