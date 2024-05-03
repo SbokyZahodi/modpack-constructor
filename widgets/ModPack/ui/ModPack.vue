@@ -1,12 +1,15 @@
 <script lang='ts' setup>
+import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 import { useModpack } from '..'
 import ModPackConfigurator from './ModPackConfigurator.vue'
 import DownloadModpack from './DownloadModpack.vue'
 import { ModCard } from '~/entities/ModEntity'
+import { ShowModVersions, useModVersions } from '~/features/ShowModVersions'
 
 const { modpack, removeMod, removeAllMods } = useModpack()
+const { showProjectVersions } = useModVersions()
 
-const { data: mods, pending } = await useAPI<IMod[]>(() => `projects?ids=${JSON.stringify(modpack.value.modlist)}`, {
+const { data: mods, pending } = await useAPI<IMod[]>(() => `projects?ids=${JSON.stringify(modpack.value.modlist.map(mod => mod.slug))}`, {
   immediate: true,
   key: 'modlist',
   onResponse() {
@@ -42,7 +45,7 @@ const modsBySearch = computed(() => modsByTab.value?.filter(mod => mod.title.toL
         <UCloseButton @click="isSlideOpen = false" />
       </div>
 
-      <div class="p-1 flex gap-2 justify-between">
+      <div class="flex justify-between gap-2 p-1">
         <div class="flex w-full gap-2">
           <UTooltip text="Remove all mods">
             <UButton :icon="ICONS.TRASH" color="red" variant="outline" :loading="pending" @click="removeAllMods">
@@ -54,18 +57,18 @@ const modsBySearch = computed(() => modsByTab.value?.filter(mod => mod.title.toL
           Mods installed: {{ modpack.modlist.length }}
         </UButton>
       </div>
+      <UInput v-model="searchByName" placeholder="Filter mods by name" class="mt-2" />
 
-      <div class="mt-5 overflow-auto hide-scrollbar h-75%">
+      <div class="overflow-auto hide-scrollbar h-75%">
         <div class="p1">
-          <UInput v-model="searchByName" placeholder="Filter mods by name" />
           <TransitionExpand group tag="ul">
             <ul v-for="mod in modsBySearch" :key="mod.project_id" class="relative my-2" :mod="mod">
               <ModCard :mod="mod" />
 
               <div class="absolute right-4 flex gap-2 bottom-4 md:bottom-auto md:top-4">
                 <UTooltip text="Select mod version">
-                  <UButton variant="outline" :icon="ICONS.CUBE">
-                    latest
+                  <UButton variant="outline" :icon="ICONS.CUBE" @click="showProjectVersions(mod)">
+                    <span class="truncate w-30">{{ modpack.modlist.find(m => m.slug === mod.slug)?.version_name }}</span>
                   </UButton>
                 </UTooltip>
                 <UTooltip text="Remove mod">
@@ -108,12 +111,13 @@ const modsBySearch = computed(() => modsByTab.value?.filter(mod => mod.title.toL
       </div>
     </div>
     <ModPackConfigurator v-model="isOptionsModalOpened" @close-modal="isOptionsModalOpened = false" />
+    <ShowModVersions />
   </USlideover>
 
-  <UTooltip :popper="{ placement: 'right' }" text="Open modpack" :shortcuts="['Alt', 'A']" class="text-xl absolute top-4 left-4">
-    <UCard :ui="{ body: { padding: 'p-1' } }" class="w-13 transition-all duration-1000 overflow-hidden rounded-full" :class="{ 'w-70': mods?.length }" @click="isSlideOpen = true">
-      <div class="flex gap-4">
-        <UButton size="xl" class="rounded-full" color="sky" icon="streamline:backpack-solid" />
+  <UTooltip :popper="{ placement: 'bottom' }" text="Open modpack" :shortcuts="['Alt', 'A']" class="text-xl absolute left-4 top-4">
+    <UCard :ui="{ body: { padding: 'p-1' } }" class="cursor-pointer overflow-hidden rounded-full w-13 hover:bg-cyan transition-all duration-500" :class="{ 'w-70': mods?.length }" @click="isSlideOpen = true">
+      <div class="flex items-center gap-4">
+        <UButton size="xl" class="rounded-full" icon="streamline:backpack-solid" />
 
         <UAvatarGroup :max="5" size="md">
           <UAvatar v-for="mod in mods" :key="mod.project_id" :src="mod.icon_url" class="bg-zinc" />

@@ -34,10 +34,10 @@ const items = computed(() => {
     arrows
     :ui="{
       arrows: {
-        wrapper: 'absolute -top-1 left-0 w-full p-2',
+        wrapper: 'absolute -top-1 left-0 w-full p-2 hidden md:block',
       },
     }"
-    class="center h-10 px-15"
+    class="h-10 md:px-15 center"
     :prev-button="{
       color: 'gray',
       icon: 'mingcute:left-fill',
@@ -49,7 +49,7 @@ const items = computed(() => {
       class: '',
     }"
   >
-    <UButton class="gap-2 p-2 center mx-2" :variant="selectedCategories.includes(item.name) ? 'solid' : 'outline'" @click="addCategory(item.name)">
+    <UButton class="gap-2 center p-2 mx-2" :variant="selectedCategories.includes(item.name) ? 'solid' : 'outline'" @click="addCategory(item.name)">
       <div alt="" class="size-5" v-html="item.icon" />
       {{ item.name }}
     </UButton>

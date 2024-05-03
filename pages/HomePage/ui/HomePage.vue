@@ -33,9 +33,9 @@ const { data, pending } = await useAPI<{ limit: number, offset: number, total_hi
 
 <template>
   <UContainer>
-    <div class="md:flex justify-between items-center gap-4">
+    <div class="justify-between items-center gap-4 md:flex">
       <UInput v-model="modName" class="basis-1/2" size="lg" placeholder="Search mod" trailing-icon="line-md:search" />
-      <SelectProjectType class="relative bottom-1 basis-1/2" />
+      <SelectProjectType class="basis-1/2 relative bottom-1" />
     </div>
 
     <SelectCategory class="my-1" />

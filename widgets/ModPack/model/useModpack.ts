@@ -1,5 +1,5 @@
 interface IModpack {
-  modlist: string[]
+  modlist: IShortModInfo[]
   loader: ILoader
   version: string
   dependenciesAutoinstall: boolean
@@ -26,15 +26,31 @@ export default () => {
     modpack.value.modlist = []
   }
 
-  function addMod(slug: string) {
-    if (!modpack.value.modlist.includes(slug)) {
-      modpack.value.modlist.push(slug)
+  function setModVersion(projectId: string, version: string, version_name: string) {
+    const mod = modpack.value.modlist.find(mod => mod.slug === projectId)
+
+    if (!mod) {
+      useToast().add({ title: 'Mod not found', color: 'red' })
+      return
+    }
+
+    mod.version = version
+    mod.version_name = version_name
+
+    useToast().add({ title: `${mod.slug} version has been changed to ${mod.version_name}`, icon: ICONS.CUBE, color: 'green' })
+
+    HSetQuery('modpack', JSON.stringify(modpack.value))
+  }
+
+  function addMod(mod: IShortModInfo) {
+    if (!modpack.value.modlist.some(exist => exist.slug === mod.slug)) {
+      modpack.value.modlist.push(mod)
       useToast().add({ title: 'Mod added', icon: ICONS.CUBE, color: 'green' })
     }
   }
 
   function removeMod(modSlug: string) {
-    modpack.value.modlist = modpack.value.modlist.filter(slug => slug !== modSlug)
+    modpack.value.modlist = modpack.value.modlist.filter(mod => mod.slug !== modSlug)
     useToast().add({ title: 'Mod removed', icon: 'ic:baseline-delete' })
   }
 
@@ -55,5 +71,6 @@ export default () => {
     addMod,
     removeMod,
     removeAllMods,
+    setModVersion,
   }
 }

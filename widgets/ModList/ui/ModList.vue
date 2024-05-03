@@ -1,5 +1,5 @@
 <script lang='ts' setup>
-import { ModEntity } from '~/entities/ModEntity'
+import { ModCard } from '~/entities/ModEntity'
 
 defineProps<{
   mods: IMod[]
@@ -12,7 +12,7 @@ defineProps<{
     <template v-if="!pending">
       <ul class="gap-5 gridy-300">
         <li v-for="mod in mods" :key="mod.slug" @click="HSetQuery('mod', mod.project_id)">
-          <ModEntity :mod="mod" />
+          <ModCard :mod="mod" />
         </li>
       </ul>
     </template>
@@ -21,8 +21,10 @@ defineProps<{
       <USkeleton v-for="n in 12" :key="n" class="h-40" />
     </div>
 
-    <UNotFound v-if="!mods?.length && !pending" class="h-100">
-      Nothing found
-    </UNotFound>
+    <UCard v-if="!mods?.length && !pending" class="h-140 center">
+      <UNotFound class="">
+        Not found
+      </UNotFound>
+    </UCard>
   </div>
 </template>
