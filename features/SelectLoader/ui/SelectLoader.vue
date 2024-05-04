@@ -1,5 +1,9 @@
 <script lang='ts' setup>
-const loader = ref(HGetQuery('loader', 'All')) as Ref<ILoader>
+import { useModpack } from '~/widgets/ModPack'
+
+const { modpack } = useModpack()
+
+const loader = ref(HGetQuery('loader', modpack.value.loader)) as Ref<ILoader>
 
 const items = [{
   label: 'All',
