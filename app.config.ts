@@ -21,7 +21,14 @@ export default defineAppConfig({
 
     notifications: {
       // Show toasts at the top right of the screen
-      position: 'bottom-0 ',
+      position: 'bottom-0 left-0',
+      // container: 'center',
+    },
+
+    notification: {
+      default: {
+        timeout: 2000,
+      },
     },
 
     modal: {
