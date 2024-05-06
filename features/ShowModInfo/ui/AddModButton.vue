@@ -15,7 +15,6 @@ async function fetchModsWithDependencies() {
     if (props.mod.project_type === 'mod') {
       return {
         game_versions: JSON.stringify([modpack.value.version]),
-        featured: true,
         loaders: JSON.stringify([modpack.value.loader]).toLowerCase(),
       }
     }
@@ -32,8 +31,11 @@ async function fetchModsWithDependencies() {
     params: params(),
   })
 
-  if (!versions.length)
-    throw new Error('No versions found')
+  if (!versions.length) {
+    useToast().add({ title: 'This mod is incompatible with your version', color: 'red' })
+    pending.value = false
+    return
+  }
 
   const dependencies = versions[0].dependencies.filter(({ dependency_type }) => dependency_type === 'required')
 
@@ -79,7 +81,7 @@ const isModCompatible = computed(() => {
 </script>
 
 <template>
-  <UButton class="center font-semibold w-full p-4" :loading="pending" :disabled="!isModCompatible.compatible" variant="solid" @click="fetchModsWithDependencies">
+  <UButton class="center w-full p-4 font-semibold" :loading="pending" :disabled="!isModCompatible.compatible" variant="solid" @click="fetchModsWithDependencies">
     {{ isModCompatible.message }}
   </UButton>
 </template>

@@ -1,5 +1,9 @@
 <script lang='ts' setup>
-const loader = ref(HGetQuery('loader', 'All')) as Ref<ILoader>
+import { useModpack } from '~/widgets/ModPack'
+
+const { modpack } = useModpack()
+
+const loader = ref(HGetQuery('loader', modpack.value.loader)) as Ref<ILoader>
 
 const items = [{
   label: 'All',
@@ -14,6 +18,11 @@ const items = [{
 }]
 
 const currentIndex = computed(() => items.findIndex(el => el.label === loader.value))
+
+onMounted(() => {
+  if (!HGetQuery('loader'))
+    HSetQuery('loader', modpack.value.loader)
+})
 
 function setLoader(event: number) {
   if (items[event].label === 'All') {
