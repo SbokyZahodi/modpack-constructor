@@ -16,21 +16,21 @@ export default () => {
   })
 
   const searchOptions = computed(() => {
-    const list = []
+    const options = []
 
-    list.push([`project_type:${project_type.value}`])
-    list.push([`versions:${modpack.value.version}`])
+    options.push([`project_type:${project_type.value}`])
+    options.push([`versions:${modpack.value.version}`])
 
     if (categories.value)
-      categories.value.split(',').forEach(category => list.push([`categories:${category}`]))
+      categories.value.split(',').forEach(category => options.push([`categories:${category}`]))
 
     if (project_type.value === 'datapack')
-      list.push([`project_type:datapack`])
+      options.push([`project_type:datapack`])
 
     if (loader.value && project_type.value === 'mod')
-      list.push([`categories:${loader.value}`])
+      options.push([`categories:${loader.value}`])
 
-    return JSON.stringify(list)
+    return JSON.stringify(options)
   })
 
   const modlistPage = computed(() => {
@@ -46,6 +46,5 @@ export default () => {
     project_type,
     loader,
     categories,
-
   }
 }

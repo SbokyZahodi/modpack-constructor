@@ -60,8 +60,14 @@ export default () => {
       return
     }
 
-    modpack.value.modlist = []
-    useToast().add({ title: 'All mods removed', icon: 'ic:baseline-delete', color: 'green' })
+    const actions = ref([{
+      label: 'Confirm',
+      click: () => modpack.value.modlist = [],
+    }, {
+      label: 'Cancel',
+    }])
+
+    useToast().add({ title: 'Remove all mods?', icon: 'ic:baseline-delete', color: 'red', actions, timeout: 0, closeButton: false })
   }
 
   return {

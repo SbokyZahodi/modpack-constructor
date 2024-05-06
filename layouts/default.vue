@@ -13,7 +13,7 @@ import { Header } from '~/widgets/Header'
     <ModPack />
     <Header />
     <ShowModInfo />
-    <UNotifications class="md:w-100" />
+    <UNotifications class="md:w-120" />
     <slot />
   </main>
 </template>

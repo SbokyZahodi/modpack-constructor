@@ -39,9 +39,9 @@ const { data, pending } = await useAPI<{ limit: number, offset: number, total_hi
     </div>
 
     <SelectCategory class="my-1" />
-    <div class="items-center justify-between md:flex my-4">
+    <div class="items-center justify-between lg:flex my-4">
       <SelectLoader />
-      <UPagination v-if="data" v-model="searchPage" :total="data.total_hits" class="relative bottom-1 mt-5 md:mt-0" :page-count="20" />
+      <UPagination v-if="data" v-model="searchPage" :total="data.total_hits" class="relative bottom-1 mt-5 lg:mt-0" :page-count="20" />
     </div>
 
     <div class="my-4">

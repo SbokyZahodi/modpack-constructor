@@ -54,7 +54,6 @@ const modsBySearch = computed(() => modsByTab.value?.filter(mod => mod.title.toL
               <span class="hidden md:block">Clear All</span>
             </UButton>
           </UTooltip>
-          <CheckForUpdates />
         </div>
         <CopyModList :modlist="modpack.modlist" color="gray" />
       </div>

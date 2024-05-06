@@ -19,6 +19,11 @@ const items = [{
 
 const currentIndex = computed(() => items.findIndex(el => el.label === loader.value))
 
+onMounted(() => {
+  if (!HGetQuery('loader'))
+    HSetQuery('loader', modpack.value.loader)
+})
+
 function setLoader(event: number) {
   if (items[event].label === 'All') {
     HSetQuery('loader', null)
