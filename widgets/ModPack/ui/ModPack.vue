@@ -119,7 +119,7 @@ const modsBySearch = computed(() => modsByTab.value?.filter(mod => mod.title.toL
     <ShowModVersions />
   </USlideover>
 
-  <UTooltip :popper="{ placement: 'bottom' }" text="Open modpack" :shortcuts="['Alt', 'A']" class="text-xl absolute left-4 top-4">
+  <UTooltip :popper="{ placement: 'bottom' }" text="Open modpack" :shortcuts="['Alt', 'A']" class="text-xl fixed md:absolute left-4 bottom-4 md:bottom-auto md:top-4">
     <UCard :ui="{ body: { padding: 'p-1' } }" class="cursor-pointer overflow-hidden rounded-full w-13 hover:bg-cyan transition-all duration-500" :class="{ 'w-70': mods?.length }" @click="isSlideOpen = true">
       <div class="flex items-center gap-4">
         <UButton size="xl" class="rounded-full" icon="streamline:backpack-solid" />

@@ -4,7 +4,7 @@ import { ToggleDarkMode } from '~/features/ToggleDarkMode'
 
 <template>
   <div class="p-4">
-    <UContainer class="flex justify-end items-center lg:justify-center">
+    <UContainer class="flex items-center justify-center">
       <div class="flex gap-2">
         <ToggleDarkMode color="white" class="center rounded-xl size-12" />
 
