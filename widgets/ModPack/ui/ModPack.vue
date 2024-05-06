@@ -1,8 +1,10 @@
 <script lang='ts' setup>
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
+import { RecycleScroller } from 'vue-virtual-scroller'
 import { useModpack } from '..'
 import ModPackConfigurator from './ModPackConfigurator.vue'
 import DownloadModpack from './DownloadModpack.vue'
+import { CopyModList } from '~/features/CopyModList'
 import { ModCard } from '~/entities/ModEntity'
 import { ShowModVersions, useModVersions } from '~/features/ShowModVersions'
 
@@ -49,44 +51,48 @@ const modsBySearch = computed(() => modsByTab.value?.filter(mod => mod.title.toL
         <div class="flex w-full gap-2">
           <UTooltip text="Remove all mods">
             <UButton :icon="ICONS.TRASH" color="red" variant="outline" :loading="pending" @click="removeAllMods">
-              Clear All
+              <span class="hidden md:block">Clear All</span>
             </UButton>
           </UTooltip>
+          <CheckForUpdates />
         </div>
-        <UButton color="gray">
-          Mods installed: {{ modpack.modlist.length }}
-        </UButton>
+        <CopyModList :modlist="modpack.modlist" color="gray" />
       </div>
-      <UInput v-model="searchByName" placeholder="Filter mods by name" class="mt-2" />
+      <UInput v-model="searchByName" placeholder="Filter mods by name" class="my-2" />
 
-      <div class="overflow-auto hide-scrollbar h-75%">
-        <div class="p1">
-          <TransitionExpand group tag="ul">
-            <ul v-for="mod in modsBySearch" :key="mod.project_id" class="relative my-2" :mod="mod">
-              <ModCard :mod="mod" />
+      <div class="overflow-auto relative hide-scrollbar">
+        <TransitionScale axis="x" appear>
+          <RecycleScroller
+            v-if="modsBySearch"
+            v-slot="{ item }"
+            class="h-65vh md:h-170 hide-scrollbar"
+            :items="modsBySearch"
+            :item-size="170"
+            key-field="slug"
+          >
+            <ul class="relative m-2" :mod="item">
+              <ModCard :mod="item" />
 
               <div class="absolute right-4 flex gap-2 bottom-4 md:bottom-auto md:top-4">
                 <UTooltip text="Select mod version">
-                  <UButton variant="outline" :icon="ICONS.CUBE" @click="showProjectVersions(mod)">
-                    <span class="truncate w-30">{{ modpack.modlist.find(m => m.slug === mod.slug)?.version_name }}</span>
+                  <UButton variant="outline" :icon="ICONS.CUBE" @click="showProjectVersions(item)">
+                    <span class="truncate w-30">{{ modpack.modlist.find(m => m.slug === item.slug)?.version_name }}</span>
                   </UButton>
                 </UTooltip>
                 <UTooltip text="Remove mod">
-                  <UButton color="red" variant="outline" :loading="pending" :icon="ICONS.TRASH" @click="removeMod(mod.slug)" />
+                  <UButton color="red" variant="outline" :loading="pending" :icon="ICONS.TRASH" @click="removeMod(item.slug)" />
                 </UTooltip>
               </div>
             </ul>
-          </TransitionExpand>
-        </div>
+          </RecycleScroller>
+        </TransitionScale>
 
-        <TransitionExpand>
-          <UNotFound v-if="!modsBySearch?.length" class="md:h-[90%] h-1/2 m-1" />
-        </TransitionExpand>
+        <UNotFound v-if="!modsBySearch?.length" class="absolute top-0 left-0 w-full md:h-[90%] h-1/2 m-1" />
       </div>
 
-      <div class="absolute p-2 w-full left-0 bottom-0">
-        <UCard>
-          <div class="md:flex justify-between items-center">
+      <div class="absolute w-full px-2 left-0 bottom-0 pb-3">
+        <UCard :ui="{ body: { padding: 'p-2' } }">
+          <div class="flex overflow-auto hide-scrollbar justify-between items-center">
             <div class="flex items-center gap-4">
               <UTooltip text="Select modpack configuration" @click="isOptionsModalOpened = true">
                 <UButton :icon="ICONS.GEAR" color="gray" size="lg" />
