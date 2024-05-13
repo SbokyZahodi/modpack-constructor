@@ -1,5 +1,5 @@
 export interface IModPack {
+  modlist: IShortModInfo[]
+  loader: ILoader
   version: string
-  modlist: string[]
-  loader: string
 }

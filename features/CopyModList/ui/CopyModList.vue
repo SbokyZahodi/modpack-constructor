@@ -8,6 +8,11 @@ const props = defineProps<{
 const pending = ref(false)
 
 async function saveModlistAsTxt() {
+  if (!props.modlist.length) {
+    useToast().add({ title: 'No mods installed', color: 'red' })
+    return
+  }
+
   const modlist = await $api<IModInfo[]>('projects', {
     params: {
       ids: JSON.stringify(props.modlist.map(mod => mod.slug)),

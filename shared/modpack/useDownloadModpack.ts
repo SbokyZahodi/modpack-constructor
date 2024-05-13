@@ -1,7 +1,6 @@
 import JSZip from 'jszip'
 import filesaver from 'file-saver'
-import { useModpack } from '../model'
-import downloadWithProgress from './downloadWithProgress'
+import downloadWithProgress from '../api/downloadWithProgress'
 
 interface ModFile {
   project_type: string
@@ -16,8 +15,6 @@ interface state {
 }
 
 export default () => {
-  const { modpack } = useModpack()
-
   const state = useState((): state => {
     return {
       isFetching: false,
@@ -27,8 +24,8 @@ export default () => {
   })
 
   /** Downloads mods then creates zip that will be downloaded */
-  async function downloadModpack() {
-    if (!modpack.value.modlist.length) {
+  async function downloadModpack(modpack: IModPack) {
+    if (!modpack.modlist.length) {
       useToast().add({ title: 'No mods installed', color: 'red' })
       return
     }
@@ -41,7 +38,7 @@ export default () => {
     const shadersFolder = zip.folder('shaders')
     const resourcesFolder = zip.folder('resourcepacks')
 
-    const mods = await downloadMods(modpack.value.modlist)
+    const mods = await downloadMods(modpack.modlist)
 
     // Sort to zip folders by project type | shader resourcepack mod
     mods.forEach((mod: ModFile) => {
@@ -59,7 +56,7 @@ export default () => {
 
     // Download zip
     zip.generateAsync({ type: 'blob' }).then((content) => {
-      filesaver.saveAs(content, `${modpack.value.loader}-${modpack.value.version}.zip`)
+      filesaver.saveAs(content, `${modpack.loader}-${modpack.version}.zip`)
     })
 
     state.value.isFetching = false
@@ -85,7 +82,7 @@ export default () => {
       }
     })
 
-    // Set total to download
+    // Set total size to download
     state.value.total = versionsWithModData.reduce((total, version) => total + version.files[0].size, 0)
 
     for (const version of versionsWithModData) {

@@ -1,6 +1,6 @@
 <script lang='ts' setup>
 import ModInfoSkeleton from './ModInfoSkeleton.vue'
-import AddModButton from './AddModButton.vue'
+import { AddModButton } from '~/features/AddMod'
 
 const mod = computed(() => HGetQuery('mod', null))
 

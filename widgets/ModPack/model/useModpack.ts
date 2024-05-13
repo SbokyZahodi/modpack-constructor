@@ -1,19 +1,12 @@
-interface IModpack {
-  modlist: IShortModInfo[]
-  loader: ILoader
-  version: string
-  dependenciesAutoinstall: boolean
-}
-
 export default () => {
   const defaultValue = {
     modlist: [],
-    loader: 'Forge',
+    loader: 'Forge' as ILoader,
     version: '1.20.4',
   }
 
-  const modpack = useState<IModpack>('modpack', () => {
-    return JSON.parse(HGetQuery('modpack', JSON.stringify(defaultValue)))
+  const modpack = useState<IModPack>('modpack', () => {
+    return defaultValue
   })
 
   function setVersion(version: string) {
@@ -38,8 +31,6 @@ export default () => {
     mod.version_name = version_name
 
     useToast().add({ title: `${mod.slug} version has been changed to ${mod.version_name}`, icon: ICONS.CUBE, color: 'green' })
-
-    HSetQuery('modpack', JSON.stringify(modpack.value))
   }
 
   function addMod(mod: IShortModInfo) {
