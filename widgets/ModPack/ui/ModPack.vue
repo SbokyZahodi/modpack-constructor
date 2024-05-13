@@ -1,22 +1,47 @@
 <script lang='ts' setup>
-import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 import { RecycleScroller } from 'vue-virtual-scroller'
+import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 import { useModpack } from '..'
 import ModPackConfigurator from './ModPackConfigurator.vue'
-import DownloadModpack from './DownloadModpack.vue'
-import { CopyModList } from '~/features/CopyModList'
 import { ModCard } from '~/entities/ModEntity'
+import { CopyModList } from '~/features/CopyModList'
+import { DownloadModpack } from '~/features/DownloadModpack'
+import { ShareModpack } from '~/features/ShareModpack'
 import { ShowModVersions, useModVersions } from '~/features/ShowModVersions'
 
 const { modpack, removeMod, removeAllMods } = useModpack()
 const { showProjectVersions } = useModVersions()
 
-const { data: mods, pending } = await useAPI<IMod[]>(() => `projects?ids=${JSON.stringify(modpack.value.modlist.map(mod => mod.slug))}`, {
-  immediate: true,
+const { data: mods, pending } = await useAPI<IMod[]>(() => `projects?ids=${JSON.stringify(modpack.value.modlist?.map(mod => mod.slug))}`, {
   key: 'modlist',
   onResponse() {
-    HSetQuery('modpack', JSON.stringify(modpack.value))
+    sessionStorage.setItem('modpack', JSON.stringify(modpack.value))
   },
+})
+
+onMounted(async () => {
+  const modpackId = HGetQuery('modpack', null)
+
+  if (modpackId) {
+    await $fetch<IModPack>('/api/modpack', {
+      method: 'get',
+      params: {
+        id: modpackId,
+      },
+      onResponse({ response }) {
+        modpack.value = response._data
+      },
+    })
+  }
+
+  else {
+    const sessionModpack = sessionStorage.getItem('modpack')
+
+    if (!sessionModpack)
+      return
+
+    modpack.value = JSON.parse(sessionModpack)
+  }
 })
 
 const isSlideOpen = ref(false)
@@ -86,12 +111,12 @@ const modsBySearch = computed(() => modsByTab.value?.filter(mod => mod.title.toL
           </RecycleScroller>
         </TransitionScale>
 
-        <UNotFound v-if="!modsBySearch?.length" class="absolute top-0 left-0 w-full md:h-[90%] h-1/2 m-1" />
+        <UNotFound v-if="!modsBySearch?.length" class="absolute w-full top-0 left-0 md:h-[90%] h-1/2 m-1" />
       </div>
 
-      <div class="absolute w-full px-2 left-0 bottom-0 pb-3">
+      <div class="absolute w-full left-0 px-2 bottom-0 pb-3">
         <UCard :ui="{ body: { padding: 'p-2' } }">
-          <div class="flex overflow-auto hide-scrollbar justify-between items-center">
+          <div class="flex overflow-auto hide-scrollbar p1 justify-between items-center">
             <div class="flex items-center gap-4">
               <UTooltip text="Select modpack configuration" @click="isOptionsModalOpened = true">
                 <UButton :icon="ICONS.GEAR" color="gray" size="lg" />
@@ -106,10 +131,8 @@ const modsBySearch = computed(() => modsByTab.value?.filter(mod => mod.title.toL
             </div>
 
             <div class="flex gap-4 mt-2 md:mt-0">
-              <DownloadModpack :disabled="pending" />
-              <UButton :icon="ICONS.SHARE" variant="ghost" @click="HCopyToClipboard()">
-                Share
-              </UButton>
+              <DownloadModpack :disabled="pending" variant="ghost" :modpack="modpack" />
+              <ShareModpack />
             </div>
           </div>
         </UCard>

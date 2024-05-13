@@ -8,7 +8,7 @@ const props = defineProps<{
 const { modpack, addMod } = useModpack()
 const pending = ref(false)
 
-async function fetchModsWithDependencies() {
+async function fetchModWithDependencies() {
   pending.value = true
 
   const params = () => {
@@ -81,7 +81,7 @@ const isModCompatible = computed(() => {
 </script>
 
 <template>
-  <UButton class="center w-full p-4 font-semibold" :loading="pending" :disabled="!isModCompatible.compatible" variant="solid" @click="fetchModsWithDependencies">
+  <UButton class="center w-full p-4 font-semibold" :loading="pending" :disabled="!isModCompatible.compatible" variant="solid" @click="fetchModWithDependencies">
     {{ isModCompatible.message }}
   </UButton>
 </template>

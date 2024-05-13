@@ -20,10 +20,17 @@ export default defineNuxtConfig({
       'shared/*',
       // Auto-import all files from shared directory.
     ],
+
   },
 
   dir: {
     pages: 'app/routes',
+  },
+
+  nitro: {
+    storage: {
+      data: { driver: 'vercelKV' },
+    },
   },
 
   site: {

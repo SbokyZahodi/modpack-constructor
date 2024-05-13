@@ -1,4 +1,3 @@
-export default () => {
-  navigator.clipboard.writeText(window.location.href)
-  useToast().add({ title: 'Link copied', icon: 'ic:baseline-content-copy' })
+export default (value: string) => {
+  navigator.clipboard.writeText(value)
 }

@@ -28,6 +28,10 @@ onMounted(() => {
   version.value = modpack.value.version
 })
 
+watch(() => [loader.value, version.value], () => {
+  sessionStorage.setItem('modpack', JSON.stringify(modpack.value))
+})
+
 function saveChanges() {
   setLoader(loader.value)
   setVersion(version.value)

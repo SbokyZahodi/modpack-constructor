@@ -1,17 +1,16 @@
 ## The Minecraft modpack constructor in browser
 ### Powered by [Modrinth](https://modrinth.com/) 💡
 
+![Preview](https://modpack-constructor.vercel.app/preview.png)
+
 ### Goals
 
 - 🌐 **Web-Based**: Nothing to install
 
 - 🔍 **Search & Filter**: Easily find the mods you're looking for.
-- 🔗 **Shareable**: Share modpack with a URL.
+- 🔗 **Eazy to share**
 - 🍉 **Fresh**: Automatically installs the latest versions of mods.
 - 🛠️ **Dependencies**: Dependencies are installed automatically.
-
-![Preview](https://modpack-constructor.vercel.app/preview-1.png)
-![Preview](https://modpack-constructor.vercel.app/preview-2.png)
 
 ### Stack
 

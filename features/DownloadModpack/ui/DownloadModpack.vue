@@ -1,11 +1,13 @@
 <script lang='ts' setup>
-import useDownloadModpack from '../api/useDownloadModpack'
+defineProps<{
+  modpack: IModPack
+}>()
 
 const { state, downloadModpack } = useDownloadModpack()
 </script>
 
 <template>
-  <UButton v-bind="$attrs" :icon="ICONS.DOWNLOAD" variant="ghost" @click="downloadModpack">
+  <UButton v-bind="$attrs" :icon="ICONS.DOWNLOAD" @click="downloadModpack(modpack)">
     Download
   </UButton>
 
@@ -13,11 +15,11 @@ const { state, downloadModpack } = useDownloadModpack()
     <UIcon class="mx-auto text-5xl text-sky mb-4" name="material-symbols:download-rounded" />
     <UProgress animation="carousel" />
     <div class="flex justify-between items-center">
-      <p class="mt-2 flex items-center gap-2 justify-end text-end">
+      <p class="flex items-center mt-2 gap-2 justify-end text-end">
         Downloading mods... <UIcon name="mingcute:loading-3-line" class="text-xl animate-spin" />
       </p>
 
-      <span class="w-28">{{ toMegabytes(state.loaded) }} / {{ toMegabytes(state.total) }}</span>
+      <span class="w-30 text-right">{{ toMegabytes(state.loaded) }} / {{ toMegabytes(state.total) }}</span>
     </div>
   </UModal>
 </template>
