@@ -5,6 +5,8 @@ const { modpack } = useModpack()
 const isSharePending = ref(false)
 
 async function shareModpack() {
+  const config = useRuntimeConfig()
+
   if (modpack.value.modlist.length === 0) {
     useToast().add({ title: 'No mods installed', color: 'red' })
     return
@@ -23,7 +25,7 @@ async function shareModpack() {
     },
   })
 
-  HCopyToClipboard(`(modpack) - http://localhost:3000/?modpack=${response}\n(preview) - http://localhost:3000/preview?modpack=${response}`)
+  HCopyToClipboard(`(modpack) - ${config.public.baseUrl}/?modpack=${response}\n(preview) - ${config.public.baseUrl}/preview?modpack=${response}`)
 
   useToast().add({ title: 'Modpack links are copied!', icon: ICONS.SHARE })
 }

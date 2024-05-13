@@ -10,6 +10,12 @@ export default defineNuxtConfig({
   ],
   css: ['@/app/global.css'],
 
+  runtimeConfig: {
+    public: {
+      baseUrl: 'https://modpack-constructor.vercel.app',
+    },
+  },
+
   // Disable for a while
   typescript: {
     typeCheck: false,
