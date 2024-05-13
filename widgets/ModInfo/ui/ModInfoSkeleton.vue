@@ -4,10 +4,10 @@
       <USkeleton class="rounded-xl size-40" />
     </div>
 
-    <USkeleton class="h-10 mt-5 w-1/2 mx-auto" />
+    <USkeleton class="h-10 mt-5 mx-auto w-1/2" />
 
     <div class="mt-5 flex w-full gap-2 justify-end">
-      <div class="w-1/2 grid gap-4">
+      <div class="w-1/2 gap-4 grid">
         <USkeleton class="w-full h-8" />
         <USkeleton class="w-full h-8" />
       </div>

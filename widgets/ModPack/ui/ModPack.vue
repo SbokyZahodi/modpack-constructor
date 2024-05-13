@@ -24,7 +24,6 @@ onMounted(async () => {
 
   if (modpackId) {
     await $fetch<IModPack>('/api/modpack', {
-      method: 'get',
       params: {
         id: modpackId,
       },
@@ -89,7 +88,7 @@ const modsBySearch = computed(() => modsByTab.value?.filter(mod => mod.title.toL
           <RecycleScroller
             v-if="modsBySearch"
             v-slot="{ item }"
-            class="h-65vh md:h-170 hide-scrollbar"
+            class="hide-scrollbar h-65vh md:h-170"
             :items="modsBySearch"
             :item-size="170"
             key-field="slug"
@@ -111,12 +110,12 @@ const modsBySearch = computed(() => modsByTab.value?.filter(mod => mod.title.toL
           </RecycleScroller>
         </TransitionScale>
 
-        <UNotFound v-if="!modsBySearch?.length" class="absolute w-full top-0 left-0 md:h-[90%] h-1/2 m-1" />
+        <UNotFound v-if="!modsBySearch?.length" class="absolute w-full left-0 top-0 md:h-[90%] h-1/2 m-1" />
       </div>
 
       <div class="absolute w-full left-0 px-2 bottom-0 pb-3">
         <UCard :ui="{ body: { padding: 'p-2' } }">
-          <div class="flex overflow-auto hide-scrollbar p1 justify-between items-center">
+          <div class="flex overflow-auto hide-scrollbar justify-between items-center p1">
             <div class="flex items-center gap-4">
               <UTooltip text="Select modpack configuration" @click="isOptionsModalOpened = true">
                 <UButton :icon="ICONS.GEAR" color="gray" size="lg" />
@@ -142,7 +141,7 @@ const modsBySearch = computed(() => modsByTab.value?.filter(mod => mod.title.toL
     <ShowModVersions />
   </USlideover>
 
-  <UTooltip :popper="{ placement: 'bottom' }" text="Open modpack" :shortcuts="['Alt', 'A']" class="text-xl fixed md:absolute left-4 bottom-4 md:bottom-auto md:top-4">
+  <UTooltip :popper="{ placement: 'bottom' }" text="Open modpack" :shortcuts="['Alt', 'A']" class="text-xl bottom-4 md:bottom-auto md:top-4 left-4 fixed md:absolute">
     <UCard :ui="{ body: { padding: 'p-1' } }" class="cursor-pointer overflow-hidden rounded-full w-13 hover:bg-cyan transition-all duration-500" :class="{ 'w-70': mods?.length }" @click="isSlideOpen = true">
       <div class="flex items-center gap-4">
         <UButton size="xl" class="rounded-full" icon="streamline:backpack-solid" />

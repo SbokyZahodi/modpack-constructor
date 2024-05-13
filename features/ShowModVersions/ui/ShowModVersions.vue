@@ -46,7 +46,7 @@ function selectVersion(version: IVersion) {
         <UCloseButton @click="close" />
       </div>
 
-      <div class="overflow-auto mt-2 p-2 h-100">
+      <div class="mt-2 p-2 overflow-auto h-100">
         <template v-if="pending">
           <USkeleton v-for="n in 8" :key="n" class="mt-2 w-full h-10" />
         </template>

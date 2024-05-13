@@ -9,13 +9,13 @@ const handleError = () => clearError({ redirect: '/' })
 </script>
 
 <template>
-  <UCard class="center h-90vh m-10 light:bg-blue-1">
+  <UCard class="h-90vh m-10 light:bg-blue-1 center">
     <UNotFound class="">
       <template v-if="error?.statusCode === 404">
         <h2 class="text-3xl">
           {{ error?.statusCode }}
         </h2>
-        <UButton class="mt-4 w-50 center" size="xl" @click="handleError">
+        <UButton class="center mt-4 w-50" size="xl" @click="handleError">
           Back to home
         </UButton>
       </template>

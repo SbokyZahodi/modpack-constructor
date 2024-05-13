@@ -37,7 +37,7 @@ const items = computed(() => {
         wrapper: 'absolute -top-1 left-0 w-full p-2 hidden md:block',
       },
     }"
-    class="h-10 md:px-15 center"
+    class="center h-10 md:px-15"
     :prev-button="{
       color: 'gray',
       icon: 'mingcute:left-fill',

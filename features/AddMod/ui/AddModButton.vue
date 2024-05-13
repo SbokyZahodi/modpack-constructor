@@ -81,7 +81,7 @@ const isModCompatible = computed(() => {
 </script>
 
 <template>
-  <UButton class="center w-full p-4 font-semibold" :loading="pending" :disabled="!isModCompatible.compatible" variant="solid" @click="fetchModWithDependencies">
+  <UButton class="center font-semibold w-full p-4" :loading="pending" :disabled="!isModCompatible.compatible" variant="solid" @click="fetchModWithDependencies">
     {{ isModCompatible.message }}
   </UButton>
 </template>

@@ -45,7 +45,7 @@ onMounted(() => {
         <img :src="modInfo?.icon_url" class="rounded-xl size-40 m-5">
       </div>
 
-      <div class="mt-4 text-center font-bold text-3xl">
+      <div class="mt-4 text-center text-3xl font-bold">
         {{ modInfo?.title }}
       </div>
 
@@ -82,12 +82,12 @@ onMounted(() => {
           class: '',
         }"
 
-        :ui="{ item: 'snap-end' }" arrows indicators class="mt-4 rounded-xl h-70 overflow-hidden"
+        :ui="{ item: 'snap-end' }" arrows indicators class="mt-4 rounded-xl overflow-hidden h-70"
       >
         <NuxtImg :src="item" placeholder class="h-70 w-100" draggable="false" />
       </UCarousel>
 
-      <div class="absolute bottom-0 left-0 w-full p-2">
+      <div class="absolute w-full p-2 bottom-0 left-0">
         <AddModButton :mod="modInfo" />
       </div>
     </div>

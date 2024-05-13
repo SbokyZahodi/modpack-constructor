@@ -21,7 +21,7 @@ defineProps<{
       <USkeleton v-for="n in 12" :key="n" class="h-40" />
     </div>
 
-    <UCard v-if="!mods?.length && !pending" class="h-140 center">
+    <UCard v-if="!mods?.length && !pending" class="center h-140">
       <UNotFound class="">
         Not found
       </UNotFound>

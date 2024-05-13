@@ -32,7 +32,7 @@ const { data: mods } = await useAsyncData(() => $api<IMod[]>(`projects?ids=${JSO
     <div class="mt-10">
       <UCard v-for="mod in mods" :key="mod.slug" class="my-5" data-aos="fade-right">
         <div class="flex items-center gap-4 text-xl">
-          <NuxtImg class="w-15 rounded-xl" :src="mod.icon_url" />
+          <NuxtImg class="rounded-xl w-15" :src="mod.icon_url" />
 
           <p class="truncate">
             {{ mod.slug }}

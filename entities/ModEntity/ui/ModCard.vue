@@ -12,7 +12,7 @@ defineProps<{
       <span class="font-semibold text-lg w-2/3">{{ mod.title }}</span>
     </div>
 
-    <div class="flex items-center justify-between mt-4">
+    <div class="flex items-center mt-4 justify-between">
       <UDownloads :downloads="mod.downloads" />
     </div>
   </UCard>

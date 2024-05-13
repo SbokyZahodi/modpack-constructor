@@ -15,7 +15,7 @@ const { state, downloadModpack } = useDownloadModpack()
     <UIcon class="mx-auto text-5xl text-sky mb-4" name="material-symbols:download-rounded" />
     <UProgress animation="carousel" />
     <div class="flex justify-between items-center">
-      <p class="flex items-center mt-2 gap-2 justify-end text-end">
+      <p class="flex items-center gap-2 mt-2 justify-end text-end">
         Downloading mods... <UIcon name="mingcute:loading-3-line" class="text-xl animate-spin" />
       </p>
 

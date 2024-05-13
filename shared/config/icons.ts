@@ -4,5 +4,5 @@ export enum ICONS {
   GEAR = 'material-symbols:settings-rounded',
   CUBE = 'clarity:block-solid',
   TRASH = 'octicon:trash-16',
-  UPDATE = 'ic:round-sync'
+  UPDATE = 'ic:round-sync',
 }
