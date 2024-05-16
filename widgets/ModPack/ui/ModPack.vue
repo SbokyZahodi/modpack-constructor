@@ -23,7 +23,7 @@ onMounted(async () => {
   const modpackId = HGetQuery('modpack', null)
 
   if (modpackId) {
-    await $fetch<IModPack>('/api/modpack', {
+    const response = await $fetch<IModPack>('/api/modpack', {
       params: {
         id: modpackId,
       },
@@ -31,6 +31,9 @@ onMounted(async () => {
         modpack.value = response._data
       },
     })
+
+    if (!response)
+      showError({ message: 'Modpack not found', statusCode: 404 })
   }
 
   else {
