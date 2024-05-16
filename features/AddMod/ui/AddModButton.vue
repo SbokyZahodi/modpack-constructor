@@ -1,4 +1,5 @@
 <script lang='ts' setup>
+import { fetchModWithDependencies } from '../api'
 import { useModpack } from '~/widgets/ModPack'
 
 const props = defineProps<{
@@ -8,51 +9,15 @@ const props = defineProps<{
 const { modpack, addMod } = useModpack()
 const pending = ref(false)
 
-async function fetchModWithDependencies() {
+async function fetchModsWithDeps() {
+  if (!props.mod)
+    throw new Error('No mod provided')
+
   pending.value = true
 
-  const params = () => {
-    if (props.mod.project_type === 'mod') {
-      return {
-        game_versions: JSON.stringify([modpack.value.version]),
-        loaders: JSON.stringify([modpack.value.loader]).toLowerCase(),
-      }
-    }
+  const modsToAppend = await fetchModWithDependencies(props.mod, modpack.value)
 
-    else {
-      return {
-        game_versions: JSON.stringify([modpack.value.version]),
-        featured: true,
-      }
-    }
-  }
-
-  const versions = await $api<IVersion[]>(`project/${props.mod.slug}/version`, {
-    params: params(),
-  })
-
-  if (!versions.length) {
-    useToast().add({ title: 'This mod is incompatible with your version', color: 'red' })
-    pending.value = false
-    return
-  }
-
-  const dependencies = versions[0].dependencies.filter(({ dependency_type }) => dependency_type === 'required')
-
-  const dependenciesPromises = dependencies.map(({ project_id }) => $api<IModInfo>(`project/${project_id}`))
-
-  const dependenciesList = await Promise.all(dependenciesPromises)
-
-  const dependenciesVersions = await Promise.all(dependenciesList.map(({ slug }) => $api<IVersion[]>(`project/${slug}/version`, {
-    params: params(),
-  })))
-
-  const modsToAppend = [
-    { slug: props.mod.slug, version: versions[0].id, project_type: props.mod.project_type, version_name: versions[0].name },
-    ...dependenciesList.map((mod, index) => ({ slug: mod.slug, version: dependenciesVersions[index][0].id, project_type: mod.project_type, version_name: dependenciesVersions[index][0].name })),
-  ]
-
-  modsToAppend.forEach(mod => addMod(mod))
+  modsToAppend?.forEach(mod => addMod(mod))
 
   pending.value = false
 
@@ -81,7 +46,7 @@ const isModCompatible = computed(() => {
 </script>
 
 <template>
-  <UButton class="center font-semibold w-full p-4" :loading="pending" :disabled="!isModCompatible.compatible" variant="solid" @click="fetchModWithDependencies">
+  <UButton class="center font-semibold w-full p-4" :loading="pending" :disabled="!isModCompatible.compatible" variant="solid" @click="fetchModsWithDeps">
     {{ isModCompatible.message }}
   </UButton>
 </template>
