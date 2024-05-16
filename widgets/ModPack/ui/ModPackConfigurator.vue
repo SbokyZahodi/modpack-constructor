@@ -63,7 +63,7 @@ function saveChanges() {
 
       <UAlert v-if="modpack.modlist.length" class="mt-2" title="If you change a modpack configuration modlist will be reset" icon="octicon:alert-16" description="" color="red" variant="outline" />
 
-      <div class="absolute grid gap-2 px-2 w-full grid-cols-2 justify-around bottom-2 right-0">
+      <div class="absolute grid gap-2 px-2 w-full bottom-2 grid-cols-2 justify-around right-0">
         <UButton size="xl" variant="outline" class="center" color="red" @click="emit('closeModal')">
           Cancel
         </UButton>

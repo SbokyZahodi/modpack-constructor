@@ -87,7 +87,7 @@ onMounted(() => {
         <NuxtImg :src="item" placeholder class="h-70 w-100" draggable="false" />
       </UCarousel>
 
-      <div class="absolute w-full p-2 bottom-0 left-0">
+      <div class="absolute w-full p-2 left-0 bottom-0">
         <AddModButton :mod="modInfo" />
       </div>
     </div>

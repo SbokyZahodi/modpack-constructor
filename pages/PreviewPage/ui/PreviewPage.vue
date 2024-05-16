@@ -41,7 +41,7 @@ const { data: mods } = await useAsyncData(() => $api<IMod[]>(`projects?ids=${JSO
       </UCard>
     </div>
 
-    <div class="fixed bottom-2 left-0 w-full">
+    <div class="w-full fixed bottom-2 left-0">
       <UContainer>
         <DownloadModpack v-if="modpack" class="w-full center mt-10 h-17 backdrop-blur-xl" size="xl" variant="outline" :modpack="modpack" />
       </UContainer>
