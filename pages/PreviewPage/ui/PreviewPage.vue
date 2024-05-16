@@ -29,7 +29,7 @@ const { data: mods } = await useAsyncData(() => $api<IMod[]>(`projects?ids=${JSO
       </div>
     </div>
 
-    <div class="mt-10">
+    <div class="mt-10 pb-15">
       <UCard v-for="mod in mods" :key="mod.slug" class="my-5" data-aos="fade-right">
         <div class="flex items-center gap-4 text-xl">
           <NuxtImg class="rounded-xl w-15" :src="mod.icon_url" />
@@ -41,6 +41,10 @@ const { data: mods } = await useAsyncData(() => $api<IMod[]>(`projects?ids=${JSO
       </UCard>
     </div>
 
-    <DownloadModpack v-if="modpack" class="w-full center mt-10 h-20" size="xl" variant="outline" :modpack="modpack" />
+    <div class="fixed bottom-2 left-0 w-full">
+      <UContainer>
+        <DownloadModpack v-if="modpack" class="w-full center mt-10 h-17 backdrop-blur-xl" size="xl" variant="outline" :modpack="modpack" />
+      </UContainer>
+    </div>
   </UContainer>
 </template>
