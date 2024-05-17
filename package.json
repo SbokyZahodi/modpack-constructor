@@ -2,6 +2,7 @@
   "name": "modpack-constructor",
   "type": "module",
   "private": true,
+  "packageManager": "bun@1.1.8",
   "author": "SbokyZahodi (https://github.com/SbokyZahodi)",
   "license": "MIT",
   "homepage": "https://github.com/SbokyZahodi/modpack-constructor",
@@ -12,7 +13,8 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "prepare": "simple-git-hooks"
   },
   "dependencies": {
     "@morev/vue-transitions": "^3.0.2",
@@ -35,8 +37,9 @@
     "@unocss/transformer-directives": "^0.59.4",
     "@unocss/transformer-variant-group": "^0.59.4",
     "eslint": "^9.2.0",
+    "lint-staged": "^15.2.2",
     "nuxt": "^3.11.2",
-    "pre-commit": "^1.2.2",
+    "simple-git-hooks": "^2.11.1",
     "typescript": "^5.4.5"
   },
   "trustedDependencies": [
@@ -48,10 +51,14 @@
     "json-editor-vue",
     "pre-commit",
     "sharp",
+    "simple-git-hooks",
     "spawn-sync",
     "vue-demi"
   ],
-  "pre-commit": [
-    "lint:fix"
-  ]
+  "simple-git-hooks": {
+    "pre-commit": "bun lint-staged"
+  },
+  "lint-staged": {
+    "*": "eslint --fix"
+  }
 }
