@@ -1,24 +1,33 @@
+/* eslint-disable node/prefer-global/process */
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
+
   modules: [
     '@unocss/nuxt',
     '@nuxt/ui',
     '@nuxt/image',
     '@morev/vue-transitions/nuxt',
     '@nuxtjs/seo',
+    '@nuxtjs/device',
+    '@nuxt/fonts',
   ],
-  css: ['@/app/global.css'],
 
-  runtimeConfig: {
-    public: {
-      baseUrl: 'https://modpack-constructor.vercel.app',
-    },
+  srcDir: 'client',
+
+  future: {
+    compatibilityVersion: 4,
   },
 
-  // Disable for a while
-  typescript: {
-    typeCheck: false,
+  css: ['/app/global.css'],
+
+  runtimeConfig: {
+
+    public: {
+      baseUrl: 'https://modpack-constructor.vercel.app',
+      API_KEY: process.env.NUXT_API_KEY || '',
+    },
+
   },
 
   imports: {
@@ -53,4 +62,5 @@ export default defineNuxtConfig({
     },
   ],
 
+  compatibilityDate: '2024-07-23',
 })

@@ -1,11 +1,14 @@
 ## The Minecraft modpack constructor in browser
-### Powered by [Modrinth](https://modrinth.com/) 💡
 
 ![Preview](https://modpack-constructor.vercel.app/preview.png)
 
-### Goals
+### Powered by [Modrinth](https://modrinth.com/) & CurseForge 💡
+
+### Features
 
 - 🌐 **Web-Based**: Nothing to install
+
+- 🎉 **CurseForge & Modrinth support**
 
 - 🔍 **Search & Filter**: Easily find the mods you're looking for.
 - 🔗 **Eazy to share**
@@ -14,7 +17,7 @@
 
 ### Stack
 
-- **Nuxt.js**:
+- **Nuxt 3**:
 
 - **UnoCSS**:
 
