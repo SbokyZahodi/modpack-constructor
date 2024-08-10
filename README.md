@@ -2,7 +2,7 @@
 
 ![Preview](https://modpack-constructor.vercel.app/preview.png)
 
-### Powered by [Modrinth](https://modrinth.com/) & CurseForge 💡
+### Powered by [Modrinth](https://modrinth.com/) & [CurseForge](https://www.curseforge.com/) 💡
 
 ### Features
 
