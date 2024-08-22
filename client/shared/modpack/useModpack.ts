@@ -1,4 +1,4 @@
-import type { IModInfo } from '../api/types/IModInfo'
+import type { IModInfo, IModInfoWithFile } from '../api/types/IModInfo'
 import type { IVersion } from '../api/types/IVersion'
 
 const defaultValue = {
@@ -40,7 +40,7 @@ export default () => {
     useToast().add({ title: `${mod.slug} version has been changed to ${version.name}`, icon: ICONS.CUBE, color: 'green' })
   }
 
-  function addMod(mod: IModInfo) {
+  function addMod(mod: IModInfoWithFile) {
     if (!modpack.value.modlist.some(exist => exist.slug === mod.slug)) {
       modpack.value.modlist.push(mod)
       useToast().add({ title: `${mod.title} added`, icon: ICONS.CUBE, color: 'green' })

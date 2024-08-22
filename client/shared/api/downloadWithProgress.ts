@@ -1,11 +1,17 @@
-export default async function fetchWithProgress(url: string, onProgress: (loaded: number, total: number) => void) {
-  const API_KEY = useRuntimeConfig().public.API_KEY
+import type { IModInfoWithFile } from './types/IModInfo'
 
-  const headers = url.includes('curse') ? { 'x-api-key': API_KEY } : undefined
+export default async function fetchWithProgress(mod: IModInfoWithFile, onProgress: (loaded: number, total: number) => void) {
+  const url = () => {
+    if (mod.provider === 'curseforge') {
+      return `api/cursemods?url=${mod.file.url}`
+    }
 
-  const response = await fetch(url, {
-    headers,
-  })
+    else {
+      return mod.file.url
+    }
+  }
+
+  const response = await fetch(url())
 
   if (!response.ok)
     throw new Error(`Failed to download file`)

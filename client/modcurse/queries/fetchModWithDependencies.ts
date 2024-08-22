@@ -43,8 +43,6 @@ export default (modId: IModInfo, version: string, modloader: ILoader): IResolver
           if (!mod)
             return undefined
 
-          const downloadUrl = `https://api.curseforge.com/v1/mods/${mod.id}/files/${f.id}`
-
           return {
             ...mod,
             version: {
@@ -52,7 +50,7 @@ export default (modId: IModInfo, version: string, modloader: ILoader): IResolver
               id: f.id,
             },
             file: {
-              url: downloadUrl,
+              url: f.file.url,
               length: f.file.length,
             },
           }

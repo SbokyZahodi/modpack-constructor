@@ -1,6 +1,5 @@
 import filesaver from 'file-saver'
 import JSZip from 'jszip'
-import downloadWithProgress from '../api/downloadWithProgress'
 import type { IModInfoWithFile } from '../api/types/IModInfo'
 
 interface ModFile {
@@ -68,12 +67,12 @@ export default () => {
     // Set total size to download
     state.value.totalBytes = mods.reduce((total, version) => total + version.file.length, 0)
 
-    const filesToDowload = mods.map(version => downloadWithProgress(version.file.url, (loaded) => {
+    const filesToDowload = mods.map(mod => downloadWithProgress(mod, (loaded) => {
       state.value.loadedBytes += loaded
     }).then((file) => {
       modsFiles.push({
-        project_type: version.project_type!,
-        slug: version.slug!,
+        project_type: mod.project_type!,
+        slug: mod.slug!,
         blob: file,
       })
     }))
