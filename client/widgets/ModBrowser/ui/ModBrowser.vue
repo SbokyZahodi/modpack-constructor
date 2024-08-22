@@ -29,9 +29,10 @@ const { data, execute } = await useLazyAsyncData('search-mods', async () => {
   finally {
     pending.value = false
   }
-}, { server: false })
+}, { server: false, watch: [searchPage] })
 
-watch(() => [modName.value, searchPage.value, provider.value, project_type.value, modpack.value.version, modpack.value.loader], () => {
+watch(() => [modName.value, provider.value, project_type.value, modpack.value.version, modpack.value.loader], () => {
+  searchPage.value = 1
   execute()
 })
 </script>
@@ -44,7 +45,7 @@ watch(() => [modName.value, searchPage.value, provider.value, project_type.value
         <SelectProvider class="pt-2" />
       </div>
 
-      <div class="items-center justify-between gap-4 lg:flex">
+      <div class="justify-between gap-4 items-center lg:flex">
         <SelectProjectType class="pt-2" />
 
         <UPagination v-model="searchPage" :total="data?.pagination.total ?? 0" />
