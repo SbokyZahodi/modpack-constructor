@@ -3,12 +3,14 @@
     font-family: 'Montserrat', sans-serif;
 }
 
+body {
+    @apply bg-gradient-to-br from-white to-gray-300 dark:from-black dark:to-gray-700 bg-fixed
+}
+
 .hide-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
-
-
 
 .hide-scrollbar::-webkit-scrollbar {
     display: none;

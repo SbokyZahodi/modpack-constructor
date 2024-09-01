@@ -3,11 +3,12 @@ import type { IModInfo } from '~/shared/api/types/IModInfo'
 
 defineProps<{
   mod: IModInfo
+  active: boolean
 }>()
 </script>
 
 <template>
-  <UCard as="div" class="transition cursor-pointer hover:bg-light-400 hover:dark:bg-zinc-800 border-inherit shadow-none light:border">
+  <UCard as="div" class="transition cursor-pointer">
     <div class="flex gap-5">
       <NuxtImg placeholder :src="mod.logo" format="webp" class="rounded-xl size-20" />
 

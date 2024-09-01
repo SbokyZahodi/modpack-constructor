@@ -7,9 +7,7 @@ const { state, downloadModpack } = useDownloadModpack()
 </script>
 
 <template>
-  <UButton v-bind="$attrs" :icon="ICONS.DOWNLOAD" @click="downloadModpack(modpack)">
-    Download
-  </UButton>
+  <UButton v-bind="$attrs" :icon="ICONS.DOWNLOAD" @click="downloadModpack(modpack)" />
 
   <UModal v-model="state.pending" prevent-close :ui="{ background: 'bg-transparent shadow-none dark:bg-transparent' }">
     <UIcon class="mx-auto text-5xl text-sky mb-4" name="material-symbols:download-rounded" />

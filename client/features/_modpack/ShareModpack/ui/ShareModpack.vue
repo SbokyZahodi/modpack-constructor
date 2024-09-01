@@ -30,7 +30,5 @@ async function shareModpack() {
 </script>
 
 <template>
-  <UButton :icon="ICONS.SHARE" :loading="isSharePending" @click="shareModpack">
-    Share
-  </UButton>
+  <UButton :icon="ICONS.SHARE" :loading="isSharePending" @click="shareModpack" />
 </template>

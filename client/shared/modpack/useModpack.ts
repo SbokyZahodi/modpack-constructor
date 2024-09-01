@@ -1,4 +1,4 @@
-import type { IModInfo, IModInfoWithFile } from '../api/types/IModInfo'
+import type { IModInfoWithFile } from '../api/types/IModInfo'
 import type { IVersion } from '../api/types/IVersion'
 
 const defaultValue = {
