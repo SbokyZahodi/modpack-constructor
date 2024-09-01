@@ -3,16 +3,26 @@ import { ModPack } from '~/widgets/ModPack'
 import { ModBrowser } from '~/widgets/ModBrowser'
 
 const ModInfo = defineAsyncComponent(() => import('~/widgets/ModInfo/ui/ModInfo.vue'))
-const MobileNavigationBar = defineAsyncComponent(() => import('./MobileNavigationBar.vue'))
+
+const tabs = [
+  { label: 'ModPack', component: ModPack, icon: 'fluent:backpack-28-filled' },
+  { label: 'Browser', component: ModBrowser, icon: 'ic:sharp-search' },
+  // { label: 'My Modpacks', icon: 'material-symbols-light:lists' },
+]
+
+const currentTab = ref(HGetQuery('tab', 0))
 </script>
 
 <template>
-  <MobileNavigationBar v-if="useDevice().isMobile" class="m-3" />
+  <UContainer class="py-4">
+    <div class="flex justify-center">
+      <UTabs v-model="currentTab" class="w-fit" :items="tabs" @change="(res) => HSetQuery('tab', res)" />
+    </div>
 
-  <div v-if="!useDevice().isMobile" class="grid-cols-2 md:grid-cols-3 gap-10 m-5 lg:grid md:grid">
-    <ModPack class="h95vh sticky top-5" />
-    <ModBrowser class="hidden lg:block col-span-2" />
-  </div>
+    <TransitionSlide mode="out-in">
+      <component :is="tabs[currentTab]?.component" />
+    </TransitionSlide>
 
-  <ModInfo />
+    <ModInfo />
+  </UContainer>
 </template>

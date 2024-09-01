@@ -21,7 +21,7 @@ export default defineAppConfig({
 
     notifications: {
       // Show toasts at the top right of the screen
-      position: 'bottom-0 start-0 md:start-1/3 h-fit w-full',
+      position: 'bottom-0 end-0 h-fit w-full',
       // container: 'center',
     },
 
@@ -31,8 +31,24 @@ export default defineAppConfig({
       },
     },
 
+    tabs: {
+      list: {
+        marker: {
+          wrapper: 'duration-300',
+        },
+      },
+    },
+
     modal: {
       container: 'items-center',
+      transition: {
+        enter: 'ease-out duration-300',
+        enterFrom: 'opacity-0 sm:scale-50',
+        enterTo: 'opacity-100 sm:scale-100',
+        leave: 'ease-in duration-300',
+        leaveFrom: 'opacity-100 sm:scale-100',
+        leaveTo: 'opacity-0 sm:scale-50',
+      },
     },
 
     slideover: {

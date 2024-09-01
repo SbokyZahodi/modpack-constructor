@@ -6,7 +6,7 @@ const props = defineProps<{
   mod: IModInfo
 }>()
 
-const emit = defineEmits(['added'])
+const emit = defineEmits(['installed'])
 
 const { modpack, addMod } = useModpack()
 const pending = ref(false)
@@ -45,7 +45,7 @@ async function fetchModsWithDeps() {
 
   pending.value = false
 
-  emit('added')
+  emit('installed')
 }
 
 const isModCompatible = computed(() => {
@@ -59,7 +59,7 @@ const isModCompatible = computed(() => {
 </script>
 
 <template>
-  <UButton class="font-semibold center w-full p-4" :loading="pending" :disabled="!isModCompatible.compatible" variant="solid" @click="fetchModsWithDeps">
+  <UButton class="font-semibold w-full p-4 center" :loading="pending" :disabled="!isModCompatible.compatible" variant="solid" @click="fetchModsWithDeps">
     {{ isModCompatible.message }}
   </UButton>
 </template>

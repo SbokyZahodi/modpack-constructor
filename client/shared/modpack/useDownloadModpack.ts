@@ -70,6 +70,10 @@ export default () => {
     const filesToDowload = mods.map(mod => downloadWithProgress(mod, (loaded) => {
       state.value.loadedBytes += loaded
     }).then((file) => {
+      if (!file) {
+        return
+      }
+
       modsFiles.push({
         project_type: mod.project_type!,
         slug: mod.slug!,

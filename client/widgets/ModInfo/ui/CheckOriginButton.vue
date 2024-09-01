@@ -24,7 +24,7 @@ const currentSource = computed(() => {
 </script>
 
 <template>
-  <UTooltip :text="`Open in ${currentSource.name}`" class="absolute mt4 right-4">
+  <UTooltip :popper="{ placement: 'bottom-end' }" :text="`Open in ${currentSource.name}`" class="absolute mt4 right-4">
     <NuxtLink :to="currentSource.link" target="_blank">
       <UButton :icon="ICONS.SHARE" size="xl" variant="soft" />
     </NuxtLink>

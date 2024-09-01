@@ -28,6 +28,11 @@ const { data, execute } = await useLazyAsyncData('search-mods', async () => {
   }
   finally {
     pending.value = false
+
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    })
   }
 }, { server: false, watch: [searchPage] })
 
@@ -40,7 +45,7 @@ watch(() => [modName.value, provider.value, project_type.value, modpack.value.ve
 <template>
   <div>
     <div class="sticky top-0 backdrop-blur rounded-b-2xl z-50">
-      <div class="flex gap-4 justify-between">
+      <div class="flex justify-between gap-4">
         <UInput v-model="modName" class="w-full center" size="lg" placeholder="Search mod" trailing-icon="line-md:search" />
         <SelectProvider class="pt-2" />
       </div>
@@ -48,7 +53,7 @@ watch(() => [modName.value, provider.value, project_type.value, modpack.value.ve
       <div class="justify-between gap-4 items-center lg:flex">
         <SelectProjectType class="pt-2" />
 
-        <UPagination v-model="searchPage" :total="data?.pagination.total ?? 0" />
+        <UPagination v-model="searchPage" :total="data?.pagination?.total / 20" />
       </div>
     </div>
 

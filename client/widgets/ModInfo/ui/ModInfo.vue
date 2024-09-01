@@ -5,32 +5,40 @@ import type { IModInfo } from '~/shared/api/types/IModInfo'
 const CheckOriginButton = defineAsyncComponent(() => import('./CheckOriginButton.vue'))
 
 const modInfo = useState<IModInfo | null>('mod', () => null)
+const isModalOpened = ref(false)
 
-const isModExist = computed({
-  get() {
-    return modInfo.value !== null
-  },
-  set() {
-    modInfo.value = null
-  },
+watch(modInfo, () => {
+  if (modInfo.value)
+    isModalOpened.value = true
+
+  if (!modInfo.value)
+    isModalOpened.value = false
 })
+
+function closeModal() {
+  isModalOpened.value = false
+
+  setTimeout(() => {
+    modInfo.value = null
+  }, 300)
+}
 </script>
 
 <template>
-  <LazyUSlideover v-model="isModExist" :ui="{ base: 'px-5' }" @close="modInfo = null">
-    <div class="overflow-auto hide-scrollbar h-90% px-2">
-      <LazyUCloseButton class="absolute mt4 left-4" @click="modInfo = null" />
+  <LazyUModal v-model="isModalOpened" :ui="{ base: 'px-5' }" @close="closeModal">
+    <div class="overflow-auto h-200 hide-scrollbar px-2">
+      <LazyUCloseButton class="absolute mt4 left-4" @click="closeModal" />
       <CheckOriginButton v-if="modInfo" :provider="modInfo.provider" :mod-slug="modInfo.slug" />
 
       <div class="center">
-        <NuxtImg v-if="modInfo" format="webp" :src="modInfo?.logo" class="size-40 rounded-xl m-5" />
+        <NuxtImg v-if="modInfo" format="webp" :src="modInfo?.logo" class="rounded-xl size-40 m-5" />
       </div>
 
-      <div class="text-center mt-4 text-3xl font-bold">
+      <div class="mt-4 text-center text-3xl font-bold">
         {{ modInfo?.title }}
       </div>
 
-      <div class="flex flex-col justify-end items-end">
+      <div class="flex justify-end flex-col items-end">
         <UDownloads v-if="modInfo?.downloads" class="center justify-end mt-5 float-right" :downloads="modInfo.downloads" />
       </div>
 
@@ -38,29 +46,31 @@ const isModExist = computed({
         {{ modInfo?.description }}
       </UCard>
 
-      <LazyUCarousel
-        v-if="modInfo?.gallery.length"
-        v-slot="{ item }" :items="modInfo?.gallery.slice(0, 10)"
+      <ClientOnly>
+        <UCarousel
+          v-if="modInfo?.gallery.length"
+          v-slot="{ item }" :items="modInfo?.gallery.slice(0, 10)"
 
-        :prev-button="{
-          color: 'gray',
-          icon: 'mingcute:left-fill',
-          class: '',
-        }"
-        :next-button="{
-          color: 'gray',
-          icon: 'mingcute:right-fill',
-          class: '',
-        }"
+          :prev-button="{
+            color: 'gray',
+            icon: 'mingcute:left-fill',
+            class: '',
+          }"
+          :next-button="{
+            color: 'gray',
+            icon: 'mingcute:right-fill',
+            class: '',
+          }"
 
-        :ui="{ item: 'snap-end' }" arrows indicators class="mt-4 rounded-xl overflow-hidden h-70"
-      >
-        <NuxtImg :src="item" placeholder class="h-70 w-100" draggable="false" />
-      </LazyUCarousel>
+          :ui="{ item: 'snap-end' }" arrows indicators class="mt-4 rounded-xl overflow-hidden h-70"
+        >
+          <NuxtImg :src="item" placeholder loading="lazy" class="h-70 w-120 object-contain" draggable="false" />
+        </UCarousel>
+      </ClientOnly>
 
       <div class="absolute w-full p-2 left-0 bottom-0">
-        <InstallMod v-if="modInfo" :mod="modInfo" @added="modInfo = null" />
+        <InstallMod v-if="modInfo" :mod="modInfo" @installed="() => closeModal()" />
       </div>
     </div>
-  </LazyUSlideover>
+  </LazyUModal>
 </template>

@@ -1,19 +1,14 @@
 <script lang='ts' setup>
 import { RecycleScroller } from 'vue-virtual-scroller'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
-import ModpackActions from './ModpackActions.vue'
 import ModpackInfo from './ModpackInfo.vue'
 import ModpackModCard from './ModpackModCard.vue'
+import ModpackActions from './ModpackActions.vue'
 import { SelectModVersion, useModVersions } from '~/features/_modpack/SelectModVersion'
-import { SelectColorTheme } from '~/features/SelectColorTheme'
 
 const ModpackConfigurator = defineAsyncComponent(() => import('./ModpackConfigurator.vue'))
 
 const { modpack, removeMod } = useModpack()
-
-watch(() => [modpack.value], () => {
-  sessionStorage.setItem('modpack', JSON.stringify(modpack.value))
-}, { deep: true })
 
 await useAsyncData('modpack', async () => {
   const modpackID = HGetQuery('modpack', null)
@@ -22,9 +17,10 @@ await useAsyncData('modpack', async () => {
     const sessionModpack = sessionStorage.getItem('modpack')
 
     if (!sessionModpack)
-      return
+      return null
 
-    return modpack.value = JSON.parse(sessionModpack)
+    modpack.value = JSON.parse(sessionModpack)
+    return
   }
 
   return await $fetch<IModPack>('/api/modpack', {
@@ -61,47 +57,43 @@ const modsBySearch = computed(() => modsByTab.value?.filter(mod => mod.title.toL
   <div>
     <div class="flex justify-between items-center mx-1">
       <div class="flex gap-2">
-        <SelectColorTheme size="lg" color="gray" />
+        <div class="flex gap-2">
+          <ModpackInfo v-model:isOptionsModalOpened="isOptionsModalOpened" :modpack="modpack" />
+        </div>
 
-        <ModpackInfo v-model:isOptionsModalOpened="isOptionsModalOpened" :modpack="modpack" />
+        <UPopover :popper="{ placement: 'bottom' }">
+          <UButton icon="mingcute:filter-3-fill" size="lg" color="gray" />
+
+          <template #panel>
+            <div class="p-2 w-90">
+              <UTabs :items="modTypesTabs" :default-index="modTypesTabs.findIndex((el) => el.raw === modTypeFilter)" @change="modTypeFilter = modTypesTabs[$event].raw" />
+              <UInput v-model="searchByName" placeholder="Filter mods by name" class="mt-2" />
+            </div>
+          </template>
+        </UPopover>
       </div>
 
-      <UPopover :popper="{ placement: 'bottom-end' }">
-        <UButton icon="mingcute:filter-3-fill" size="lg" color="gray" />
-
-        <template #panel>
-          <div class="p-2 w-90">
-            <UTabs :items="modTypesTabs" :default-index="modTypesTabs.findIndex((el) => el.raw === modTypeFilter)" @change="modTypeFilter = modTypesTabs[$event].raw" />
-            <UInput v-model="searchByName" placeholder="Filter mods by name" class="mt-2" />
-          </div>
-        </template>
-      </UPopover>
+      <ModpackActions v-if="modpack.modlist.length" :modpack="modpack" class="flex gap-2" />
     </div>
 
     <div class="overflow-auto mt-2 hide-scrollbar relative">
       <RecycleScroller
         v-if="modpack.modlist.length"
         v-slot="{ item: mod }"
-        class="hide-scrollbar h-80vh md:h-87vh"
+        class="hide-scrollbar h-80vh md:h-85vh"
         :items="modsBySearch"
         :item-size="180"
         key-field="slug"
       >
         <div>
-          <TransitionExpand axis="x" appear>
-            <ModpackModCard class="m-1" :mod="mod" @remove="removeMod(mod.slug)" @select-version="(mod) => showProjectVersions(mod)" />
-          </TransitionExpand>
+          <ModpackModCard class="m-1" :mod="mod" @remove="removeMod(mod.slug)" @select-version="(mod) => showProjectVersions(mod)" />
         </div>
       </RecycleScroller>
 
-      <div v-else class="center h-80vh md:h-87vh">
+      <div v-else class="mt-70">
         <UNotFound />
       </div>
     </div>
-
-    <TransitionExpand>
-      <ModpackActions v-if="modpack.modlist.length" :modpack="modpack" class="grid gap-4 grid-cols-2 mt-1" />
-    </TransitionExpand>
 
     <ModpackConfigurator v-model="isOptionsModalOpened" @close-modal="isOptionsModalOpened = false" />
     <SelectModVersion />
