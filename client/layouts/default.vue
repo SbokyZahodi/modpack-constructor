@@ -1,5 +1,9 @@
 <script lang='ts' setup>
+import { initModpack } from '~/app'
 import { SelectColorTheme } from '~/features/SelectColorTheme'
+
+// Init modpack
+await useAsyncData('modpack', () => initModpack(), { server: false })
 
 defineOgImage({
   url: '/og-image.png',

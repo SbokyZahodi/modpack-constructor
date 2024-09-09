@@ -6,14 +6,16 @@ defineProps<{
   mods: IModInfo[]
   pending: boolean
 }>()
+
+const { modpack } = useModpack()
 </script>
 
 <template>
   <div>
     <template v-if="!pending">
-      <ul class="grid gap-4 lg:grid-cols-2">
-        <li v-for="mod in mods" :key="mod.slug" @click="useState('mod').value = mod">
-          <ModCard :mod="mod" />
+      <ul class="gap-4 grid lg:grid-cols-2">
+        <li v-for="mod in mods" :key="mod.slug">
+          <ModCard :mod="mod" :active="modpack.modlist.some(m => m.slug === mod.slug)" @click="useState('mod').value = mod" />
         </li>
       </ul>
     </template>

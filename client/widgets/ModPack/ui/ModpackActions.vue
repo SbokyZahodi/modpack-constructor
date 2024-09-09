@@ -15,8 +15,5 @@ defineProps<{
     <UTooltip text="Share modpack">
       <ShareModpack size="lg" color="gray" />
     </UTooltip>
-    <!-- <UTooltip text="Save modpack">
-      <UButton icon="material-symbols:save" size="lg" color="gray" />
-    </UTooltip> -->
   </div>
 </template>
