@@ -8,11 +8,11 @@ defineProps<{
 </script>
 
 <template>
-  <UCard as="div" class="transition cursor-pointer">
+  <UCard as="div" class="transition cursor-pointer border border-transparent" :class="{ 'border-cyan-500': active }">
     <div class="flex gap-5">
       <NuxtImg placeholder :src="mod.logo" format="webp" class="rounded-xl size-20" />
 
-      <span class="font-semibold text-lg w-2/3">{{ mod.title }}</span>
+      <span class="font-semibold text-lg gradient-text">{{ mod.title }}</span>
     </div>
 
     <div class="flex items-center mt-4 justify-between">

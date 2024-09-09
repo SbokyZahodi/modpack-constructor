@@ -1,3 +1,3 @@
-import useFilters from './useFilters'
+import useModsFilters from './useModsFilters'
 
-export { useFilters }
+export { useModsFilters }

@@ -34,8 +34,7 @@ export default () => {
 
     mod.version.id = id
     mod.version.name = name
-    mod.file.length = file.length
-    mod.file.url = file.url
+    mod.file = { ...file }
 
     useToast().add({ title: `${mod.slug} version has been changed to ${version.name}`, icon: ICONS.CUBE, color: 'green' })
   }
@@ -65,7 +64,7 @@ export default () => {
       label: 'Cancel',
     }])
 
-    useToast().add({ title: 'Remove all mods?', icon: 'ic:baseline-delete', color: 'red', actions, timeout: 0, closeButton: false })
+    useToast().add({ title: 'Remove all mods?', icon: 'ic:baseline-delete', color: 'red', timeout: 0, actions: actions.value })
   }
 
   return {

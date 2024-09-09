@@ -7,10 +7,13 @@ const ModInfo = defineAsyncComponent(() => import('~/widgets/ModInfo/ui/ModInfo.
 const tabs = [
   { label: 'ModPack', component: ModPack, icon: 'fluent:backpack-28-filled' },
   { label: 'Browser', component: ModBrowser, icon: 'ic:sharp-search' },
-  // { label: 'My Modpacks', icon: 'material-symbols-light:lists' },
 ]
 
 const currentTab = ref(HGetQuery('tab', 0))
+
+watch(() => {
+  currentTab.value = HGetQuery('tab')
+}, HGetQuery('tab'))
 </script>
 
 <template>

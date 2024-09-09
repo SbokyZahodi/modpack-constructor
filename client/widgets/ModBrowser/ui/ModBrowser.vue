@@ -1,5 +1,5 @@
 <script lang='ts' setup>
-import { useFilters } from '../model'
+import { useModsFilters } from '../model'
 import { searchMods } from '~/modcurse'
 
 import { SelectProvider } from '~/features/_browser/SelectProvider'
@@ -9,7 +9,7 @@ import { ModList } from '~/widgets/ModList'
 const { modpack } = useModpack()
 const pending = ref(true)
 
-const { offset, searchPage, modName, project_type, provider } = useFilters()
+const { offset, searchPage, modName, project_type, provider } = useModsFilters()
 
 const { data, execute } = await useLazyAsyncData('search-mods', async () => {
   const searchParams = { offset: offset.value, modloader: modpack.value.loader, version: modpack.value.version, project_type: project_type.value }
