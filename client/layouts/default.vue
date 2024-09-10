@@ -1,5 +1,5 @@
 <script lang='ts' setup>
-import { initModpack } from '~/app'
+import initModpack from '../app/initModpack.ts'
 import { SelectColorTheme } from '~/features/SelectColorTheme'
 
 // Init modpack
