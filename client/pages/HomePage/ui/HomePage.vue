@@ -12,7 +12,7 @@ const tabs = [
 const currentTab = ref(HGetQuery('tab', 0))
 
 watch(() => {
-  currentTab.value = HGetQuery('tab')
+  currentTab.value = HGetQuery('tab', 1)
 }, HGetQuery('tab'))
 </script>
 
